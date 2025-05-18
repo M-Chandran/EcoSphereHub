@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health & Safety Management Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f4f7f6;
+        }
+        header {
+            background: linear-gradient(to right, #007bff, #0056b3);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        nav {
+            background: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid #ddd;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+            padding: 10px;
+            display: inline-block;
+        }
+        nav ul li a:hover {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        main {
+            padding: 40px 20px;
+        }
+        section {
+            margin-bottom: 60px;
+        }
+        h2 {
+            color: #007bff;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+        .services-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .service {
+            background: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            flex: 1;
+            min-width: 280px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        .service:hover {
+            transform: translateY(-5px);
+        }
+        .service i {
+            font-size: 3rem;
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+        .service h3 {
+            margin: 0 0 10px;
+            font-size: 1.5rem;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        input, button {
+            padding: 15px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            max-height: 500px;
+            display: none;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        #chatbox {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        #chat-messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+        }
+        #chat-input {
+            display: flex;
+            border-top: 1px solid #ddd;
+            background: #f9f9f9;
+        }
+        #chat-input input {
+            flex: 1;
+            border: none;
+            padding: 10px;
+            border-radius: 0;
+        }
+        #chat-input button {
+            border: none;
+            background: #007bff;
+            color: #fff;
+        }
+        #chat-toggle-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            font-size: 28px;
+            transition: background-color 0.3s;
+        }
+        #chat-toggle-button:hover {
+            background: #0056b3;
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+        #map {
+            height: 300px;
+            width: 100%;
+        }
+        .notification {
+            background: #007bff;
+            color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Health & Safety Management</h1>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="service.html">Service</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="health-checkups">
+            <h2>Health Check-ups</h2>
+            <div class="container">
+                <div class="services-container">
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-calendar-check"></i>
+                        <h3>Schedule a Health Check-up</h3>
+                        <form id="appointment-form">
+                            <input type="date" id="appointment-date" required>
+                            <button type="submit">Book Appointment</button>
+                        </form>
+                    </div>
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Check-up Results</h3>
+                        <div class="chart-container">
+                            <canvas id="results-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="specialized-monitoring">
+            <h2>Specialized Health Monitoring</h2>
+            <div class="container">
+                <div class="services-container">
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-heartbeat"></i>
+                        <h3>Health Metrics</h3>
+                        <button onclick="checkHealthMetrics()">Check Metrics</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="education">
+            <h2>Health Education & Awareness</h2>
+            <div class="container">
+                <div class="services-container">
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-book"></i>
+                        <h3>Educational Resources</h3>
+                        <p>Access articles, videos, and infographics about common health issues and preventive measures.</p>
+                    </div>
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-question-circle"></i>
+                        <h3>Interactive Quizzes</h3>
+                        <p>Test your knowledge about health risks and management through interactive quizzes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="facilities">
+            <h2>Access to Medical Facilities</h2>
+            <div class="container">
+                <div class="services-container">
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h3>Find Medical Facilities</h3>
+                        <div id="map"></div>
+                    </div>
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-phone-alt"></i>
+                        <h3>Emergency Contact</h3>
+                        <form id="emergency-contact-form">
+                            <input type="text" id="emergency-contact" placeholder="Emergency Contact" required>
+                            <button type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="psychological-support">
+            <h2>Psychological Support</h2>
+            <div class="container">
+                <div class="services-container">
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-user-md"></i>
+                        <h3>Book Counseling</h3>
+                        <form id="counseling-form">
+                            <input type="date" id="counseling-date" required>
+                            <button type="submit">Book Session</button>
+                        </form>
+                    </div>
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-sun"></i>
+                        <h3>Stress Management</h3>
+                        <button onclick="accessStressTools()">Access Tools</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="wellness-programs">
+            <h2>Health & Wellness Programs</h2>
+            <div class="container">
+                <div class="services-container">
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-dumbbell"></i>
+                        <h3>Fitness Tracker Integration</h3>
+                        <button onclick="syncFitnessTracker()">Sync Tracker</button>
+                    </div>
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-apple-alt"></i>
+                        <h3>Nutrition Plans</h3>
+                        <p><a href="#" download>Download Nutrition Plans</a></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="preventive-measures">
+            <h2>Preventive Health Measures</h2>
+            <div class="container">
+                <div class="services-container">
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-syringe"></i>
+                        <h3>Vaccination Scheduling</h3>
+                        <form id="vaccination-form">
+                            <input type="date" id="vaccination-date" required>
+                            <button type="submit">Schedule Vaccination</button>
+                        </form>
+                    </div>
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-hand-paper"></i>
+                        <h3>Hygiene Tips</h3>
+                        <p>Regular tips and best practices for maintaining hygiene in mining environments.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="record-keeping">
+            <h2>Record Keeping and Follow-Up</h2>
+            <div class="container">
+                <div class="services-container">
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-folder-open"></i>
+                        <h3>View Health Records</h3>
+                        <button onclick="viewHealthRecords()">View Records</button>
+                    </div>
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-bell"></i>
+                        <h3>Set Follow-Up Reminders</h3>
+                        <button onclick="setFollowUpReminders()">Set Reminders</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ergonomic-assessments">
+            <h2>Ergonomic Assessments</h2>
+            <div class="container">
+                <div class="services-container">
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-cogs"></i>
+                        <h3>Ergonomic Assessment Tool</h3>
+                        <button onclick="startErgonomicAssessment()">Start Assessment</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="legislative-compliance">
+            <h2>Legislative Compliance</h2>
+            <div class="container">
+                <div class="services-container">
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-gavel"></i>
+                        <h3>Regulation Updates</h3>
+                        <p>Stay informed about changes in health and safety regulations.</p>
+                    </div>
+                    <div class="service animate__animated animate__fadeIn">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Compliance Tracking</h3>
+                        <button onclick="trackCompliance()">Track Compliance</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button id="chat-toggle-button"><i class="fas fa-comments"></i></button>
+
+    <div id="chat-container">
+        <div id="chatbox">
+            <div id="chat-messages"></div>
+            <div id="chat-input">
+                <input type="text" id="user-input" placeholder="Type a message...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY"></script>
+    <script>
+        // Initialize Google Maps
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: -34.397, lng: 150.644 },
+                zoom: 8
+            });
+        }
+
+        // Event Listeners
+        document.getElementById('appointment-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            bookAppointment();
+        });
+
+        document.getElementById('counseling-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            bookCounseling();
+        });
+
+        document.getElementById('vaccination-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            scheduleVaccination();
+        });
+
+        document.getElementById('emergency-contact-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('Emergency contact details submitted.');
+        });
+
+        function bookAppointment() {
+            alert('Appointment booked for ' + document.getElementById('appointment-date').value);
+        }
+
+        function checkHealthMetrics() {
+            alert('Checking health metrics...');
+        }
+
+        function bookCounseling() {
+            alert('Counseling session booked for ' + document.getElementById('counseling-date').value);
+        }
+
+        function accessStressTools() {
+            alert('Accessing stress management tools...');
+        }
+
+        function syncFitnessTracker() {
+            alert('Syncing fitness tracker...');
+        }
+
+        function scheduleVaccination() {
+            alert('Vaccination scheduled for ' + document.getElementById('vaccination-date').value);
+        }
+
+        function viewHealthRecords() {
+            alert('Viewing health records...');
+        }
+
+        function setFollowUpReminders() {
+            alert('Setting follow-up reminders...');
+        }
+
+        function startErgonomicAssessment() {
+            alert('Starting ergonomic assessment...');
+        }
+
+        function trackCompliance() {
+            alert('Tracking compliance...');
+        }
+
+        function sendMessage() {
+            var userInput = document.getElementById('user-input').value;
+            var chatMessages = document.getElementById('chat-messages');
+            chatMessages.innerHTML += '<div class="user-message animate__animated animate__fadeIn">' + userInput + '</div>';
+            document.getElementById('user-input').value = '';
+            chatMessages.innerHTML += '<div class="bot-message animate__animated animate__fadeIn">Thank you for your message!</div>';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function toggleChat() {
+            var chatContainer = document.getElementById('chat-container');
+            chatContainer.style.display = chatContainer.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Initialize Chart.js for Health Check-ups Results
+        const ctx = document.getElementById('results-chart').getContext('2d');
+        const resultsChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['January', 'February', 'March', 'April', 'May'],
+                datasets: [{
+                    label: 'Health Check-up Results',
+                    data: [12, 19, 3, 5, 2],
+                    backgroundColor: 'rgba(0, 123, 255, 0.2)',
+                    borderColor: 'rgba(0, 123, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Toggle chat button
+        document.getElementById('chat-toggle-button').addEventListener('click', toggleChat);
+
+        // Initialize map
+        window.onload = initMap;
+    </script>
+</body>
+</html>

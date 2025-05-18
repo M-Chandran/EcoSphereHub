@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Conversion Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <style>
+        /* Global Styles */
+        :root {
+      --primary-color: #ff6f61;
+      --secondary-color: #f15bb5;
+      --text-color: #333;
+      --background-color: #f0f0f0;
+      --hover-bg-color: #1c92d2;
+      --hover-text-color: #fff;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle, var(--background-color), #fff);
+      background-image: url('');
+      background-size: cover;
+      background-attachment: fixed;
+      color: var(--text-color);
+      overflow-x: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5)), url('');
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      padding: 0 20px;
+      text-align: center;
+      font-size: 3rem;
+      line-height: 80px;
+      letter-spacing: 1.5px;
+      position: relative;
+      border-bottom: 10px solid var(--primary-color);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+      text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+    }
+
+    header::after {
+      content: '';
+      position: relative;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    }
+
+    nav {
+      background: rgba(0, 0, 0, 0.9);
+      padding: 20px 0;
+      text-align: center;
+      border-bottom: 2px solid var(--primary-color);
+      position: relative;
+    }
+
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
+
+    nav ul li {
+      display: inline-block;
+      margin: 0 20px;
+      position: relative;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.2rem;
+      padding: 12px 20px;
+      border-radius: 25px;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.4s ease, transform 0.4s ease;
+    }
+
+    nav ul li a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 100%;
+      height: 4px;
+      background: var(--hover-bg-color);
+      transition: transform 0.4s ease;
+      transform: translateX(-50%) scaleX(0);
+      transform-origin: bottom left;
+    }
+
+    nav ul li a:hover::before {
+      transform: translateX(-50%) scaleX(1);
+    }
+
+    nav ul li a:hover {
+      color: var(--hover-text-color);
+      transform: scale(1.1);
+    }
+
+
+    footer {
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      background-color: #333;
+      font-size: 14px;
+      border-top: 5px solid var(--primary-color);
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+
+        .section {
+            display: none;
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+        }
+
+        .section h3 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 10px;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f8f8f8;
+            font-size: 16px;
+            color: #555;
+            transition: background-color 0.3s ease;
+        }
+
+        input:hover,
+        select:hover {
+            background-color: #f0f0f0;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .feature {
+            width: 300px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .feature:hover {
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            margin: 10px 0;
+            font-size: 20px;
+            color: #4CAF50;
+        }
+
+        .feature-description {
+            font-size: 16px;
+            color: #555;
+        }
+
+        footer {
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      background-color: #333;
+      font-size: 14px;
+      border-top: 5px solid var(--primary-color);
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+    }
+        .redirect-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.3s;
+            position: relative;
+        }
+
+        .redirect-button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .redirect-button::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: width 0.3s, height 0.3s, top 0.3s, left 0.3s;
+            border-radius: 50%;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+        }
+
+        .redirect-button:hover::before {
+            width: 0;
+            height: 0;
+            top: 50%;
+            left: 50%;
+        }
+        #chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f8f9fa;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+        }
+
+        #chatbox {
+            padding: 10px;
+        }
+
+        #chat-messages {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .user-message {
+            text-align: right;
+            background-color: #d1e7dd;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        .bot-message {
+            text-align: left;
+            background-color: #e2e3e5;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        #chat-input {
+            display: flex;
+        }
+
+        #user-input {
+            width: 75%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+
+        button {
+            width: 20%;
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Chatbot toggle button */
+        #chat-toggle-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Conversion Hub</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="service.html">Service</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <button id="chat-toggle-button" onclick="toggleChat()">💬</button>
+
+    <!-- Chatbot container -->
+    <div id="chat-container">
+        <div id="chatbox">
+            <div id="chat-messages"></div>
+            <div id="chat-input">
+                <input type="text" id="user-input" placeholder="Type your message here..." />
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+    <!-- Main Content Section -->
+    <main>
+
+        <!-- Home Section with Features -->
+        <section id="home">
+            <div class="features">
+                <div class="feature" onclick="showSection('energy-efficiency')">
+                    <span class="feature-icon">&#x1F4C8;</span>
+                    <h3 class="feature-title">Energy Efficiency</h3>
+                    <p class="feature-description">Implement measures to enhance energy efficiency across various sectors, including residential, commercial, and industrial.</p>
+                </div>
+              
+                <div class="feature" onclick="showSection('sustainable-transportation')">
+                    <span class="feature-icon">&#x1F6E0;</span>
+                    <h3 class="feature-title">Sustainable Transportation</h3>
+                    <p class="feature-description">Promote the use of electric vehicles, public transport, and cycling to reduce transportation-related emissions.</p>
+                </div>
+
+                <div class="feature" onclick="showSection('carbon-offsetting')">
+                    <span class="feature-icon">&#x1F4C4;</span>
+                    <h3 class="feature-title">Carbon Offsetting</h3>
+                    <p class="feature-description">Support projects that offset carbon emissions, such as reforestation and renewable energy initiatives.</p>
+                </div>
+
+                <div class="feature" onclick="showSection('industrial-practices')">
+                    <span class="feature-icon">&#x1F4C6;</span>
+                    <h3 class="feature-title">Industrial Practices</h3>
+                    <p class="feature-description">Adopt cleaner production techniques and technologies to minimize industrial emissions.</p>
+                </div>
+
+                <div class="feature" onclick="showSection('regulatory-compliance')">
+                    <span class="feature-icon">&#x1F4DD;</span>
+                    <h3 class="feature-title">Regulatory Compliance</h3>
+                    <p class="feature-description">Ensure adherence to environmental regulations and standards to reduce emissions and promote sustainability.</p>
+                </div>
+
+                <div class="feature" onclick="showSection('public-awareness')">
+                    <span class="feature-icon">&#x1F4AC;</span>
+                    <h3 class="feature-title">Public Awareness</h3>
+                    <p class="feature-description">Educate the public on the importance of emission control and sustainable practices through awareness campaigns.</p>
+                </div>
+
+                <div class="feature" onclick="showSection('innovation-research')">
+                    <span class="feature-icon">&#x1F4F1;</span>
+                    <h3 class="feature-title">Innovation & Research</h3>
+                    <p class="feature-description">Invest in research and development of new technologies and methods for emission reduction and sustainability.</p>
+                </div>
+
+                <div class="feature" onclick="showSection('policy-advocacy')">
+                    <span class="feature-icon">&#x1F4E2;</span>
+                    <h3 class="feature-title">Policy Advocacy</h3>
+                    <p class="feature-description">Advocate for policies and regulations that support emission reduction and environmental protection.</p>
+                </div>
+
+                <div class="feature" onclick="showSection('tree-planting')">
+                    <span class="feature-icon">&#x1F333;</span>
+                    <h3 class="feature-title">Tree Planting</h3>
+                    <a href="Tree Planting.html"> click</a>
+                    <p class="feature-description">Support and participate in tree planting initiatives to absorb CO2 and improve air quality.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section for Energy Efficiency Improvements -->
+        <section id="energy-efficiency" class="section">
+            <h3>Energy Efficiency Improvements</h3>
+            <p>Enhancing energy efficiency is critical to reducing emissions and conserving resources. Our focus includes conducting energy audits, recommending efficiency improvements, and upgrading technology. Key features include:</p>
+            <ul>
+                <li><strong>Energy Audits:</strong> Comprehensive evaluations of energy use in various sectors to identify opportunities for improvement.</li>
+                <li><strong>Efficiency Recommendations:</strong> Tailored suggestions for energy-saving measures and practices.</li>
+                <li><strong>Technology Upgrades:</strong> Advancements in technology to improve energy efficiency, such as high-efficiency appliances and systems.</li>
+            </ul>
+            <a href="https://example.com/energy-efficiency" class="redirect-button">Learn More</a>
+        </section>
+
+        <!-- Section for Sustainable Transportation -->
+        <section id="sustainable-transportation" class="section">
+            <h3>Sustainable Transportation</h3>
+            <p>Transitioning to sustainable transportation options is essential for reducing emissions. Our initiatives focus on promoting electric vehicles, enhancing public transportation, and encouraging cycling. Key aspects include:</p>
+            <ul>
+                <li><strong>Electric Vehicles:</strong> Incentives and infrastructure for the adoption of electric vehicles.</li>
+                <li><strong>Public Transport:</strong> Improvements in public transportation systems to reduce reliance on personal vehicles.</li>
+                <li><strong>Cycling:</strong> Support for cycling infrastructure and safety measures to encourage bike use.</li>
+            </ul>
+            <a href="https://example.com/sustainable-transportation" class="redirect-button">Learn More</a>
+        </section>
+
+        <!-- Section for Carbon Offsetting -->
+        <section id="carbon-offsetting" class="section">
+            <h3>Carbon Offsetting</h3>
+            <p>Carbon offsetting helps to balance out emissions by supporting projects that reduce or remove CO2 from the atmosphere. Key projects include reforestation and renewable energy initiatives. Key features:</p>
+            <ul>
+                <li><strong>Reforestation:</strong> Planting trees to absorb CO2 and restore ecosystems.</li>
+                <li><strong>Renewable Energy:</strong> Funding for projects that generate clean energy and reduce reliance on fossil fuels.</li>
+                <li><strong>Offset Certification:</strong> Ensuring that offset projects are verified and meet high standards.</li>
+            </ul>
+            <a href="https://example.com/carbon-offsetting" class="redirect-button">Learn More</a>
+        </section>
+
+        <!-- Section for Industrial Practices -->
+        <section id="industrial-practices" class="section">
+            <h3>Industrial Practices</h3>
+            <p>Improving industrial practices is key to reducing emissions and environmental impact. Our focus includes adopting cleaner production techniques and technologies. Key areas include:</p>
+            <ul>
+                <li><strong>Cleaner Production:</strong> Implementing practices that minimize waste and emissions.</li>
+                <li><strong>Technology Upgrades:</strong> Investing in technologies that reduce emissions and increase efficiency.</li>
+                <li><strong>Best Practices:</strong> Sharing industry best practices and promoting continuous improvement.</li>
+            </ul>
+            <a href="https://example.com/industrial-practices" class="redirect-button">Learn More</a>
+        </section>
+
+        <!-- Section for Regulatory Compliance -->
+        <section id="regulatory-compliance" class="section">
+            <h3>Regulatory Compliance</h3>
+            <p>Compliance with environmental regulations is crucial for reducing emissions and protecting the environment. Our focus includes:</p>
+            <ul>
+                <li><strong>Regulation Adherence:</strong> Ensuring all activities comply with local, national, and international regulations.</li>
+                <li><strong>Regular Audits:</strong> Conducting audits to verify compliance and identify areas for improvement.</li>
+                <li><strong>Reporting:</strong> Providing transparent reporting on compliance status and emissions data.</li>
+            </ul>
+            <a href="https://example.com/regulatory-compliance" class="redirect-button">Learn More</a>
+        </section>
+
+        <!-- Section for Public Awareness -->
+        <section id="public-awareness" class="section">
+            <h3>Public Awareness</h3>
+            <p>Raising public awareness about emission control and sustainable practices is essential for driving change. Our initiatives focus on:</p>
+            <ul>
+                <li><strong>Awareness Campaigns:</strong> Conducting campaigns to educate the public on emission reduction strategies.</li>
+                <li><strong>Community Engagement:</strong> Engaging with communities to promote sustainable practices and gather feedback.</li>
+                <li><strong>Educational Resources:</strong> Providing resources and tools to help individuals and organizations understand and implement emission control measures.</li>
+            </ul>
+            <a href="https://example.com/public-awareness" class="redirect-button">Learn More</a>
+        </section>
+
+        <!-- Section for Innovation & Research -->
+        <section id="innovation-research" class="section">
+            <h3>Innovation & Research</h3>
+            <p>Investing in innovation and research is key to developing new technologies and methods for emission reduction. Key focus areas include:</p>
+            <ul>
+                <li><strong>Research Projects:</strong> Funding and supporting research on new technologies and practices for emission control.</li>
+                <li><strong>Collaborations:</strong> Partnering with research institutions and organizations to advance knowledge and solutions.</li>
+                <li><strong>Technology Development:</strong> Developing and deploying new technologies to improve emission reduction efforts.</li>
+            </ul>
+            <a href="https://example.com/innovation-research" class="redirect-button">Learn More</a>
+        </section>
+
+        <!-- Section for Policy Advocacy -->
+        <section id="policy-advocacy" class="section">
+            <h3>Policy Advocacy</h3>
+            <p>Advocating for effective environmental policies and regulations is crucial for supporting emission reduction efforts. Our activities include:</p>
+            <ul>
+                <li><strong>Policy Proposals:</strong> Developing and promoting proposals for new policies and regulations.</li>
+                <li><strong>Stakeholder Engagement:</strong> Engaging with policymakers, businesses, and the public to support policy initiatives.</li>
+                <li><strong>Advocacy Campaigns:</strong> Conducting campaigns to raise awareness and support for effective environmental policies.</li>
+            </ul>
+            <a href="https://example.com/policy-advocacy" class="redirect-button">Learn More</a>
+        </section>
+
+        <!-- Section for Tree Planting -->
+        <section id="tree-planting" class="section">
+            <h3>Tree Planting</h3>
+            <p>Tree planting is an effective way to absorb CO2 and improve air quality. Our initiatives focus on:</p>
+            <ul>
+                <li><strong>Planting Initiatives:</strong> Organizing and supporting tree planting events and programs.</li>
+                <li><strong>Community Involvement:</strong> Engaging communities in tree planting activities and promoting environmental stewardship.</li>
+                <li><strong>Monitoring:</strong> Tracking the growth and impact of planted trees to ensure their effectiveness in reducing CO2.</li>
+            </ul>
+            <a href="https://example.com/tree-planting" class="redirect-button">Learn More</a>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 Emission Control Hub. All rights reserved.</p>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+          const responses = {
+            "find": {
+                "privacy policy": "Here's the [privacy policy](#).",
+                "terms of service": "You can view our [terms of service](#).",
+                "about us": "Learn more [About Us](#).",
+                "careers": "Check out our [Careers page](#).",
+                "team": "Meet our [Team](#).",
+                "blog": "Read our latest articles on our [Blog](#).",
+                "faq": "Visit the [FAQ page](#) for more information.",
+                "support": "Get help from our [Support page](#).",
+                "shipping policy": "Read our [Shipping Policy](#).",
+                "refund policy": "Details about our [Refund Policy](#)."
+            },
+            "navigate": {
+                "home": "Taking you to the [Home page](#).",
+                "services": "Visit our [Services page](#).",
+                "contact": "Here is the [Contact page](#).",
+                "products": "Explore our [Products page](#).",
+                "portfolio": "View our [Portfolio](#).",
+                "news": "Catch up on the latest [News](#).",
+                "events": "See upcoming [Events](#).",
+                "testimonials": "Read what our clients say on the [Testimonials page](#).",
+                "partners": "Meet our [Partners](#).",
+                "locations": "Find our [Locations](#)."
+            },
+            "faq": {
+                "return policy": "Our return policy allows returns within 30 days. [Read more](#).",
+                "contact info": "You can contact us at support@example.com or call +123456789.",
+                "opening hours": "We are open from 9 AM to 5 PM, Monday to Friday.",
+                "payment methods": "We accept credit cards, PayPal, and bank transfers.",
+                "membership": "Join our membership program [here](#).",
+                "discounts": "Find out about current discounts [here](#).",
+                "delivery time": "Delivery usually takes 3-5 business days.",
+                "international shipping": "Yes, we offer international shipping. [Learn more](#).",
+                "order tracking": "Track your order [here](#).",
+                "customer service": "Reach our customer service team [here](#)."
+            },
+            "recommendation": {
+                "gift": "I recommend checking out our 'Gifts' section [here](#).",
+                "popular items": "Our most popular items are listed [here](#).",
+                "new arrivals": "Check out our [New Arrivals](#).",
+                "best sellers": "Our [Best Sellers](#) are a great choice.",
+                "seasonal offers": "Explore our [Seasonal Offers](#).",
+                "specials": "Don’t miss our [Special Deals](#).",
+                "trending": "See what's [Trending](#) now.",
+                "for kids": "Browse our collection [for Kids](#).",
+                "for adults": "Explore items [for Adults](#).",
+                "on sale": "See all items currently [on Sale](#)."
+            }
+        };
+
+        // Toggle chatbot visibility
+        function toggleChat() {
+            const chatContainer = document.getElementById("chat-container");
+            if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
+                chatContainer.style.display = "block";
+            } else {
+                chatContainer.style.display = "none";
+            }
+        }
+
+        // Send message function
+        function sendMessage() {
+            const userInput = document.getElementById("user-input").value.trim();
+            if (userInput === "") return;
+
+            document.getElementById("user-input").value = ''; // Clear input after sending
+
+            const chatMessages = document.getElementById("chat-messages");
+
+            // Append user's message
+            chatMessages.innerHTML += `<div class="user-message">${userInput}</div>`;
+
+            // Get bot's response
+            const botResponse = getBotResponse(userInput);
+
+            // Append bot's response
+            chatMessages.innerHTML += `<div class="bot-message">${botResponse}</div>`;
+
+            // Auto-scroll to the bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Function to get bot's response
+        function getBotResponse(input) {
+            input = input.toLowerCase();
+
+            for (const category in responses) {
+                for (const key in responses[category]) {
+                    if (input.includes(key)) {
+                        return responses[category][key];
+                    }
+                }
+            }
+            return "I'm not sure about that. Could you please clarify?";
+        }
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(sectionId).style.display = 'block';
+        }
+
+        // Show the first section by default
+        showSection('energy-efficiency');
+    </script>
+</body>
+</html>

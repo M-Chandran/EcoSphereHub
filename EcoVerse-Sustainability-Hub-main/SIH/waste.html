@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Plastic Waste Management Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+<style>
+    /* Global Styles */
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+            opacity: 0; /* Initially hide the body */
+            background-image: url('');
+            background-size: cover;
+            animation: fadeIn 1s ease-in forwards; /* Apply fade-in animation */
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1; /* Fade in the body */
+            }
+        }
+
+        header {
+            background-position: center;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 24px;
+            letter-spacing: 1px;
+            position: relative; /* Add position relative for chain and hooks */
+        }
+
+        nav {
+            background: linear-gradient(to right, #3498db, #2ecc71); /* Gradient background */
+            padding: 15px 0;
+            text-align: center;
+            position: relative; /* Add position relative for chain and hooks */
+            z-index: 1; /* Ensure nav is above the chain */
+        }
+
+        .chain {
+            position: absolute;
+            top: 0;
+            left: 50%; /* Position horizontally in the center */
+            transform: translateX(-50%);
+            height: 50px; /* Adjust as needed */
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 0; /* Ensure the chain is below the nav */
+        }
+
+        .hook {
+            width: 20px; /* Adjust hook size */
+            height: 20px; /* Adjust hook size */
+            background-color: #333;
+            border-radius: 50%; /* Round shape */
+        }
+
+        .hook.left {
+            transform: translateX(-50%); /* Position left hook */
+        }
+
+        .hook.right {
+            transform: translateX(50%); /* Position right hook */
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px;
+            position: relative; /* Position relative for hover effect */
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s ease;
+            display: block;
+            padding: 10px 20px;
+            border-radius: 20px; /* Rounded corners for nav links */
+        }
+
+        nav ul li a:hover {
+            color: #fff;
+            text-decoration: none;
+            background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent background color on hover */
+        }
+
+        /* Main Content Styles */
+        main {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .section {
+            display: none;
+            max-width: 800px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .section h3 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .section p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 10px;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f8f8f8;
+            font-size: 16px;
+            color: #555;
+            transition: background-color 0.3s ease;
+        }
+
+        input:hover,
+        select:hover {
+            background-color: #f0f0f0;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #4CAF50
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+
+        /* Feature Styles */
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .feature {
+            width: 300px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            transition: box-shadow 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .feature:hover {
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            margin: 10px 0;
+            font-size: 20px;
+            color: #4CAF50;
+        }
+
+        .feature-description {
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #2d4059;
+            color: #fff;
+            padding: 15px;
+            text-align: center;
+            position: unset;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .redirect-button {
+            background-color: #4CAF50;
+            /* Green background */
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            /* Adjust padding as needed */
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 20px;
+            /* Add margin to separate from paragraph */
+            cursor: pointer;
+            border-radius: 8px;
+            /* Rounded corners */
+            transition: background-color 0.3s, transform 0.3s;
+            /* Smooth transition on hover */
+            overflow: hidden;
+            position: relative;
+        }
+
+        .redirect-button:hover {
+            background-color: #45a049;
+            /* Darker green on hover */
+            transform: translateY(-2px);
+            /* Move button up on hover */
+        }
+
+        /* Style for Font Awesome icon */
+        .fa-map-marked-alt {
+            margin-right: 8px;
+            /* Add margin between icon and text */
+        }
+
+        /* Animation for hover effect */
+        .redirect-button::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: width 0.3s, height 0.3s, top 0.3s, left 0.3s;
+            border-radius: 50%;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+        }
+
+        .redirect-button:hover::before {
+            width: 0;
+            height: 0;
+            top: 50%;
+            left: 50%;
+        }
+        #chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f8f9fa;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+        }
+
+        #chatbox {
+            padding: 10px;
+        }
+
+        #chat-messages {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .user-message {
+            text-align: right;
+            background-color: #d1e7dd;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        .bot-message {
+            text-align: left;
+            background-color: #e2e3e5;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        #chat-input {
+            display: flex;
+        }
+
+        #user-input {
+            width: 75%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+
+        button {
+            width: 20%;
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Chatbot toggle button */
+        #chat-toggle-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+    </style>
+</head>
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Plastic Waste Management Hub</h1>
+        <nav>
+            <ul>
+               <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="service.html">Service</a></li>
+      <li><a href="contact.html">Contact</a></li>
+            
+            </ul>
+        </nav>
+    </header>
+    <button id="chat-toggle-button" onclick="toggleChat()">💬</button>
+
+    <!-- Chatbot container -->
+    <div id="chat-container">
+        <div id="chatbox">
+            <div id="chat-messages"></div>
+            <div id="chat-input">
+                <input type="text" id="user-input" placeholder="Type your message here..." />
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Section -->
+    <main>
+        <!-- Home Section with Features -->
+        <section id="home">
+            <div class="features">
+                <!-- Feature 1: Pickup Scheduling -->
+                <div class="feature" onclick="showSection('pickup-form')">
+                    <span class="feature-icon">&#x1F6E0;</span>
+                    <h3 class="feature-title">Schedule a Pickup</h3>
+                    <p class="feature-description">Effortlessly schedule waste pickups at your convenience.</p>
+                </div>
+
+                <!-- Feature 2: Segregation Guidelines -->
+                <div class="feature" onclick="showSection('segregation-guidelines')">
+                    <span class="feature-icon">&#x1F6A8;</span>
+                    <h3 class="feature-title">Segregation Guidelines</h3>
+                    <p class="feature-description">Learn the best practices for waste segregation to promote recycling.</p>
+                </div>
+
+                <!-- Feature 3: Recycling Centers -->
+                <div class="feature" onclick="showSection('recycling-centers')">
+                    <span class="feature-icon">&#x1F6E3;</span>
+                    <h3 class="feature-title">Recycling Centers</h3>
+                    <p class="feature-description">Locate nearby recycling centers for responsible waste disposal.</p>
+                </div>
+
+                <!-- Feature 4: Payment -->
+                <div class="feature" onclick="showSection('payment-form')">
+                    <span class="feature-icon">&#x1F4B3;</span>
+                    <h3 class="feature-title">Make Payment</h3>
+                    <p class="feature-description">Securely complete your order by providing payment information.</p>
+                </div>
+
+                <!-- Feature 5: Analytics -->
+                <div class="feature" onclick="showSection('analytics-dashboard')">
+                    <span class="feature-icon">&#x1F4CA;</span>
+                    <h3 class="feature-title">Analytics</h3>
+                    <p class="feature-description">Track and analyze key metrics for efficient waste management.</p>
+                </div>
+
+                <!-- Feature 6: Reward Options -->
+                <div class="feature" onclick="showSection('reward-options')">
+                    <span class="feature-icon">&#x1F4B0;</span>
+                    <h3 class="feature-title">Reward Options</h3>
+                    <p class="feature-description">Explore various rewards available for contributing to waste management efforts.</p>
+                </div>
+               
+            </div>
+        </section>
+
+        <!-- Pickup Form Section -->
+        <section id="pickup-form" class="section form-container">
+            <h3>Schedule a Pickup</h3>
+            <form>
+                <label for="pickup-date">Select Pickup Date:</label>
+                <input type="date" id="pickup-date" name="pickup-date" required>
+
+                <label for="pickup-time">Select Pickup Time:</label>
+                <input type="time" id="pickup-time" name="pickup-time" required>
+
+                <label for="waste-type">Type of Waste:</label>
+                <select id="waste-type" name="waste-type">
+                    <option value="organic">Organic Waste</option>
+                    <option value="plastic">Plastic Waste</option>
+                    <option value="paper">Paper Waste</option>
+                    <option value="metal">Metal Waste</option>
+                    <option value="electronic">Electronic Waste</option>
+                </select>
+
+                <label for="pickup-address">Enter Pickup Address:</label>
+                <input type="text" id="pickup-address" name="pickup-address" required>
+
+                <button type="submit">Schedule Pickup</button>
+            </form>
+        </section>
+
+        <!-- Segregation Guidelines Section -->
+        <section id="segregation-guidelines" class="section">
+            <h3>Waste Segregation Guidelines</h3>
+            <p>Proper waste segregation is crucial for effective recycling and waste management. Follow these guidelines:</p>
+            <ul>
+                <li>Separate organic waste (e.g., food scraps, yard waste) from recyclable waste.</li>
+                <li>Dispose of plastic, paper, metal, and electronic waste in designated bins.</li>
+                <li>Do not mix hazardous waste with regular waste.</li>
+                <li>Check local regulations for specific waste disposal guidelines.</li>
+            </ul>
+        </section>
+
+        <!-- Recycling Centers Section -->
+        <section id="recycling-centers" class="section">
+            <h3>Find Nearby Recycling Centers</h3>
+            <p>Discover recycling centers near your location:</p>
+            <div class="map">
+                <!-- Include an interactive map with recycling center locations -->
+                <!-- You can use Google Maps API or other mapping libraries -->
+            </div>
+            <!-- Add the styled button with an icon -->
+            <button onclick="redirectToGoogleMaps()" class="redirect-button">
+                <i class="fas fa-map-marked-alt"></i> Find Recycling Centers
+            </button>
+        </section>
+
+        <!-- Payment Form Section -->
+        <section id="payment-form" class="section form-container">
+            <h3>Enter Payment Details</h3>
+            <form>
+                <label for="card-number">Card Number:</label>
+                <input type="text" id="card-number" name="card-number" required>
+
+                <label for="expiration-date">Expiration Date (MM/YYYY):</label>
+                <input type="text" id="expiration-date" name="expiration-date" pattern="(0[1-9]|1[0-2])\/\d{4}" placeholder="MM/YYYY" required>
+
+                <label for="cvv">CVV:</label>
+                <input type="text" id="cvv" name="cvv" pattern="\d{3,4}" required>
+
+                <button type="submit">Complete Payment</button>
+            </form>
+        </section>
+
+        <!-- Analytics Dashboard Section -->
+        <section id="analytics-dashboard" class="section">
+            <h3>View Waste Management Analytics</h3>
+            <p>Track and analyze key metrics for waste management:</p>
+            <div class="charts">
+                <!-- Include dynamic charts displaying waste management analytics -->
+                <!-- You can use Chart.js or other charting libraries -->
+                <canvas id="pie-chart"></canvas>
+                <canvas id="bar-chart"></canvas>
+            </div>
+        </section>
+
+        <!-- Reward Options Section -->
+        <section id="reward-options" class="section">
+            <h3>Reward Options</h3>
+            <p>Explore various rewards available for contributing to waste management efforts:</p>
+            <ul>
+                <li>Bottles: 10 points per bottle</li>
+                <li>Plastic bags: 5 points per bag</li>
+                <li>Plastic containers: 8 points per container</li>
+              </ul>
+              <div class="calculate-section">
+                <label for="bottles">Number of Bottles:</label>
+                <input type="number" id="bottles" name="bottles" min="0">
+                <br>
+                <label for="bags">Number of Plastic Bags:</label>
+                <input type="number" id="bags" name="bags" min="0">
+                <br>
+                <label for="containers">Number of Plastic Containers:</label>
+                <input type="number" id="containers" name="containers" min="0">
+                <br>
+                <button onclick="calculateTotalPoints()">Calculate Total Points</button>
+                <br>
+                <p>Total Weight: <span id="total-weight">0</span> kg</p>
+                <p>Total Points: <span id="total-points">0</span></p>
+            </div>
+            <!-- Add the claim reward button -->
+            <button class="redirect-button" onclick="claimReward()">
+                <i class="fas fa-gift"></i> Claim Reward
+            </button>
+        </section>
+
+      
+
+        <!-- Real-Time Monitoring Section (Placeholder) -->
+        <section id="real-time-monitoring" class="section">
+            <h3>Real-Time Waste Monitoring (Coming Soon)</h3>
+            <p>Stay tuned for real-time monitoring of waste management activities!</p>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        &copy; MR.COMRADE AND TEAM. All rights reserved.
+    </footer>
+
+    <script>
+          const responses = {
+            "find": {
+                "privacy policy": "Here's the [privacy policy](#).",
+                "terms of service": "You can view our [terms of service](#).",
+                "about us": "Learn more [About Us](#).",
+                "careers": "Check out our [Careers page](#).",
+                "team": "Meet our [Team](#).",
+                "blog": "Read our latest articles on our [Blog](#).",
+                "faq": "Visit the [FAQ page](#) for more information.",
+                "support": "Get help from our [Support page](#).",
+                "shipping policy": "Read our [Shipping Policy](#).",
+                "refund policy": "Details about our [Refund Policy](#)."
+            },
+            "navigate": {
+                "home": "Taking you to the [Home page](#).",
+                "services": "Visit our [Services page](#).",
+                "contact": "Here is the [Contact page](#).",
+                "products": "Explore our [Products page](#).",
+                "portfolio": "View our [Portfolio](#).",
+                "news": "Catch up on the latest [News](#).",
+                "events": "See upcoming [Events](#).",
+                "testimonials": "Read what our clients say on the [Testimonials page](#).",
+                "partners": "Meet our [Partners](#).",
+                "locations": "Find our [Locations](#)."
+            },
+            "faq": {
+                "return policy": "Our return policy allows returns within 30 days. [Read more](#).",
+                "contact info": "You can contact us at support@example.com or call +123456789.",
+                "opening hours": "We are open from 9 AM to 5 PM, Monday to Friday.",
+                "payment methods": "We accept credit cards, PayPal, and bank transfers.",
+                "membership": "Join our membership program [here](#).",
+                "discounts": "Find out about current discounts [here](#).",
+                "delivery time": "Delivery usually takes 3-5 business days.",
+                "international shipping": "Yes, we offer international shipping. [Learn more](#).",
+                "order tracking": "Track your order [here](#).",
+                "customer service": "Reach our customer service team [here](#)."
+            },
+            "recommendation": {
+                "gift": "I recommend checking out our 'Gifts' section [here](#).",
+                "popular items": "Our most popular items are listed [here](#).",
+                "new arrivals": "Check out our [New Arrivals](#).",
+                "best sellers": "Our [Best Sellers](#) are a great choice.",
+                "seasonal offers": "Explore our [Seasonal Offers](#).",
+                "specials": "Don’t miss our [Special Deals](#).",
+                "trending": "See what's [Trending](#) now.",
+                "for kids": "Browse our collection [for Kids](#).",
+                "for adults": "Explore items [for Adults](#).",
+                "on sale": "See all items currently [on Sale](#)."
+            }
+        };
+
+        // Toggle chatbot visibility
+        function toggleChat() {
+            const chatContainer = document.getElementById("chat-container");
+            if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
+                chatContainer.style.display = "block";
+            } else {
+                chatContainer.style.display = "none";
+            }
+        }
+
+        // Send message function
+        function sendMessage() {
+            const userInput = document.getElementById("user-input").value.trim();
+            if (userInput === "") return;
+
+            document.getElementById("user-input").value = ''; // Clear input after sending
+
+            const chatMessages = document.getElementById("chat-messages");
+
+            // Append user's message
+            chatMessages.innerHTML += `<div class="user-message">${userInput}</div>`;
+
+            // Get bot's response
+            const botResponse = getBotResponse(userInput);
+
+            // Append bot's response
+            chatMessages.innerHTML += `<div class="bot-message">${botResponse}</div>`;
+
+            // Auto-scroll to the bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Function to get bot's response
+        function getBotResponse(input) {
+            input = input.toLowerCase();
+
+            for (const category in responses) {
+                for (const key in responses[category]) {
+                    if (input.includes(key)) {
+                        return responses[category][key];
+                    }
+                }
+            }
+            return "I'm not sure about that. Could you please clarify?";
+        }
+        // Function to claim the reward
+        function calculateTotalPoints() {
+    const bottles = parseInt(document.getElementById('bottles').value) || 0;
+    const bags = parseInt(document.getElementById('bags').value) || 0;
+    const containers = parseInt(document.getElementById('containers').value) || 0;
+
+    // Define points for each plastic product
+    const bottlePoints = 10;
+    const bagPoints = 5;
+    const containerPoints = 8;
+
+    // Calculate total weight and points
+    const totalWeight = (bottles * 0.5) + (bags * 0.2) + (containers * 0.3); // Assuming average weight per item
+    const totalPoints = (bottles * bottlePoints) + (bags * bagPoints) + (containers * containerPoints);
+
+    // Update the total weight and points in the HTML
+    document.getElementById('total-weight').textContent = totalWeight.toFixed(2);
+    document.getElementById('total-points').textContent = totalPoints;
+
+    // Check if total points exceed the threshold to show the reward claiming section
+    const rewardThreshold = 50; // Adjust the threshold as needed
+    if (totalPoints >= rewardThreshold) {
+        document.getElementById('reward-section').style.display = 'block';
+    } else {
+        document.getElementById('reward-section').style.display = 'none';
+    }
+}
+// Mapping of price range to points
+const pricePointsMap = {
+    '0-10': 1,   // 1 point for price range $0 - $10
+    '11-20': 2,  // 2 points for price range $11 - $20
+    '21-30': 3,  // 3 points for price range $21 - $30
+    // Add more price ranges and points as needed
+};
+
+// Function to calculate points based on the price
+function calculatePoints(price) {
+    for (const range in pricePointsMap) {
+        const [min, max] = range.split('-').map(Number);
+        if (price >= min && price <= max) {
+            return pricePointsMap[range];
+        }
+    }
+    return 0; // Default to 0 points if price doesn't fall into any range
+}
+
+// Example usage:
+const productPrice = 15; // Example price of the plastic product
+const points = calculatePoints(productPrice);
+console.log('Points earned:', points);
+
+
+function claimReward() {
+    // Add your logic here to handle reward claiming
+    alert('Reward claimed successfully!');
+}
+
+
+        function redirectToGoogleMaps() {
+            // Redirect to the specified Google Maps link
+            window.location.href = "https://www.google.com/maps/search/plastic+recycle+in+india+map/@10.7987156,78.2895276,7z?entry=ttu";
+        }
+
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Show the selected section
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.style.display = 'block';
+            }
+        }
+
+        // Dummy data for the pie chart
+        const pieChartData = {
+            labels: ['Organic Waste', 'Recyclable Waste', 'Other Waste'],
+            datasets: [{
+                data: [30, 50, 20],
+                backgroundColor: ['#4CAF50', '#2196F3', '#FFC107'],
+            }],
+        };
+
+        // Dummy data for the bar chart
+        const barChartData = {
+            labels: ['January', 'February', 'March', 'April', 'May'],
+            datasets: [{
+                label: 'Waste Collected (tons)',
+                data: [100, 120, 80, 150, 200],
+                backgroundColor: '#4CAF50',
+            }],
+        };
+
+        // Pie Chart
+        const pieChart = new Chart(document.getElementById('pie-chart').getContext('2d'), {
+            type: 'pie',
+            data: pieChartData,
+        });
+
+        // Bar Chart
+        const barChart = new Chart(document.getElementById('bar-chart').getContext('2d'), {
+            type: 'bar',
+            data: barChartData,
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                        },
+                    }],
+                },
+            },
+        });
+
+        // Show home section by default
+        showSection('home');
+    </script>
+</body>
+
+</html>

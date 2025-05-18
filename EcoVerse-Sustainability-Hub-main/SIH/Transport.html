@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Sustainable Transport Application</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    :root {
+        --primary-color: #ff6f61;
+        --secondary-color: #f15bb5;
+        --text-color: #333;
+        --background-color: #f0f0f0;
+        --hover-bg-color: #1c92d2;
+        --hover-text-color: #fff;
+    }
+    
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+    }
+    
+    #container {
+        display: flex;
+        width: 100%;
+        height: 100%;
+    }
+    
+    #map {
+        flex: 1;
+        height: 100%;
+    }
+    
+    #sidebar {
+        width: 300px;
+        background: #2c3e50;
+        color: white;
+        padding: 20px;
+        overflow-y: auto;
+        border-right: 2px solid #34495e;
+    }
+    
+    #sidebar h2 {
+        margin-top: 0;
+        color: #ecf0f1;
+    }
+    
+    nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex; /* Align items horizontally */
+        flex-wrap: wrap; /* Allow wrapping to the next line if needed */
+    }
+    
+    nav ul li {
+        margin: 10px;
+    }
+    
+    nav ul li a {
+        text-decoration: none;
+        color: #ecf0f1;
+        font-size: 18px; /* Adjust font size as needed */
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+        white-space: nowrap; /* Prevent text wrapping */
+    }
+    
+    nav ul li a:hover {
+        background-color: var(--hover-bg-color);
+        color: var(--hover-text-color);
+    }
+    
+    .section {
+        margin-bottom: 20px;
+    }
+    
+    .section h3 {
+        color: #3498db;
+        cursor: pointer;
+        margin: 0;
+        padding: 10px;
+        background: #34495e;
+        border-radius: 5px;
+    }
+    
+    .section-content {
+        display: none;
+        padding: 10px;
+        background: #34495e;
+        border-radius: 5px;
+    }
+    
+    .section-content input, .section-content select, .section-content button {
+        margin: 5px 0;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        width: calc(100% - 22px);
+    }
+    
+    .section-content select {
+        background: #34495e;
+        color: white;
+    }
+    
+    .section-content input {
+        background: #34495e;
+        color: white;
+    }
+    
+    .section-content button {
+        background: #2980b9;
+        color: white;
+        cursor: pointer;
+    }
+    
+    .section-content button:hover {
+        background: #3498db;
+    }
+    
+    #info {
+        margin: 10px 0;
+        color: #ecf0f1;
+    }
+    
+    .leaflet-popup-content {
+        font-size: 14px;
+    }
+    
+    .leaflet-popup-content b {
+        color: #2980b9;
+    }
+    #chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f8f9fa;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+        }
+
+        #chatbox {
+            padding: 10px;
+        }
+
+        #chat-messages {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .user-message {
+            text-align: right;
+            background-color: #d1e7dd;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        .bot-message {
+            text-align: left;
+            background-color: #e2e3e5;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        #chat-input {
+            display: flex;
+        }
+
+        #user-input {
+            width: 75%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+
+        button {
+            width: 20%;
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Chatbot toggle button */
+        #chat-toggle-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+    
+    @media (max-width: 768px) {
+        #sidebar {
+            width: 100%;
+            height: auto;
+            position: static;
+            border-right: none;
+            border-bottom: 2px solid #34495e;
+        }
+    
+        #container {
+            flex-direction: column;
+        }
+    
+        #map {
+            height: 60%;
+        }
+       
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="sidebar">
+            <h2>Sustainable Transport Services</h2>
+            <nav>
+                <ul>
+                    <li><a href="index.html"><i class="fas fa-home"></i></a></li>
+                    <li><a href="about.html"><i class="fas fa-user"></i></a></li>
+                    <li><a href="service.html"><i class="fas fa-cogs"></i></a></li>
+                    <li><a href="contact.html"><i class="fas fa-envelope"></i></a></li>
+                </ul>
+            </nav>
+            <button id="chat-toggle-button" onclick="toggleChat()">💬</button>
+
+<!-- Chatbot container -->
+<div id="chat-container">
+    <div id="chatbox">
+        <div id="chat-messages"></div>
+        <div id="chat-input">
+            <input type="text" id="user-input" placeholder="Type your message here..." />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+</div>
+            <!-- Interactive Maps and Route Planning -->
+            <div class="section">
+                <h3 onclick="toggleContent('maps')">Interactive Maps and Route Planning</h3>
+                <div id="maps" class="section-content">
+                    <input type="text" id="search" placeholder="Search for a location...">
+                    <button onclick="searchLocation()">Search</button>
+                    <select id="transport-type" onchange="updateTransportMarkers()">
+                        <option value="all">All Transport</option>
+                        <option value="metro">Metro</option>
+                        <option value="bus">Bus</option>
+                        <option value="train">Train</option>
+                        <option value="bicycle">Bicycle</option>
+                        <option value="ev">EV Charging</option>
+                    </select>
+                    <button onclick="updateTransportMarkers()">Update Map</button>
+                    <div id="info"></div>
+                </div>
+            </div>
+
+            <!-- Carbon Footprint Calculators -->
+            <div class="section">
+                <h3 onclick="toggleContent('carbon')">Carbon Footprint Calculators</h3>
+                <div id="carbon" class="section-content">
+                    <input type="number" id="distance" placeholder="Enter distance traveled (km)">
+                    <button onclick="calculateCarbonFootprint()">Calculate Carbon Footprint</button>
+                    <div id="carbon-info"></div>
+                </div>
+            </div>
+
+            <!-- Sustainable Transport Information and Education -->
+            <div class="section">
+                <h3 onclick="toggleContent('education')">Sustainable Transport Information and Education</h3>
+                <div id="education" class="section-content">
+                    <ul>
+                        <li><a href="https://example.com/articles" target="_blank" style="color: #3498db;">Read Articles</a></li>
+                        <li><a href="https://example.com/resources" target="_blank" style="color: #3498db;">Explore Resources</a></li>
+                        <li><a href="https://example.com/policies" target="_blank" style="color: #3498db;">Track Policies</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Ride-Sharing and Carpooling Platforms -->
+            <div class="section">
+                <h3 onclick="toggleContent('rideshare')">Ride-Sharing and Carpooling Platforms</h3>
+                <div id="rideshare" class="section-content">
+                    <input type="text" id="rideshare-location" placeholder="Enter location">
+                    <button onclick="displayRideSharingOptions()">Find Carpooling Options</button>
+                    <div id="rideshare-info"></div>
+                </div>
+            </div>
+
+            <!-- Real-Time Public Transport Tracking -->
+            <div class="section">
+                <h3 onclick="toggleContent('public-transit')">Real-Time Public Transport Tracking</h3>
+                <div id="public-transit" class="section-content">
+                    <input type="text" id="public-transit-id" placeholder="Enter transport ID">
+                    <button onclick="displayPublicTransit()">Track Public Transit</button>
+                    <div id="public-transit-info"></div>
+                </div>
+            </div>
+
+            <!-- Bicycle and Scooter Sharing Systems -->
+            <div class="section">
+                <h3 onclick="toggleContent('bikescooter')">Bicycle and Scooter Sharing Systems</h3>
+                <div id="bikescooter" class="section-content">
+                    <input type="text" id="bikescooter-location" placeholder="Enter location">
+                    <button onclick="displayBikeScooterAvailability()">Check Availability</button>
+                    <div id="bikescooter-info"></div>
+                </div>
+            </div>
+
+            <!-- Electric Vehicle (EV) Charging Station Locators -->
+            <div class="section">
+                <h3 onclick="toggleContent('ev-charging')">Electric Vehicle (EV) Charging Station Locators</h3>
+                <div id="ev-charging" class="section-content">
+                    <input type="text" id="ev-location" placeholder="Enter location">
+                    <button onclick="findEVStations()">Locate EV Charging Stations</button>
+                    <div id="ev-charging-info"></div>
+                </div>
+            </div>
+
+            <!-- Sustainable Logistics Management -->
+            <div class="section">
+                <h3 onclick="toggleContent('logistics')">Sustainable Logistics Management</h3>
+                <div id="logistics" class="section-content">
+                    <input type="text" id="delivery-route" placeholder="Enter delivery route">
+                    <button onclick="optimizeDeliveryRoutes()">Optimize Delivery Routes</button>
+                    <div id="logistics-info"></div>
+                </div>
+            </div>
+
+            <!-- Gamification and Incentives -->
+            <div class="section">
+                <h3 onclick="toggleContent('gamification')">Gamification and Incentives</h3>
+                <div id="gamification" class="section-content">
+                    <button onclick="showRewards()">Show Rewards</button>
+                    <div id="gamification-info"></div>
+                </div>
+            </div>
+
+            <!-- Data Analytics and Reporting -->
+            <div class="section">
+                <h3 onclick="toggleContent('analytics')">Data Analytics and Reporting</h3>
+                <div id="analytics" class="section-content">
+                    <button onclick="showDashboard()">View Sustainability Dashboard</button>
+                    <div id="analytics-info"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="map"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Initialize map
+        const map = L.map('map').setView([20.5937, 78.9629], 5);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Sample data
+        const transportPoints = [
+            { "lat": 19.0760, "lng": 72.8777, "name": "Mumbai Metro Station", "type": "metro" },
+            { "lat": 19.0760, "lng": 72.8777, "name": "Mumbai Bus Stop", "type": "bus" },
+            { "lat": 12.9716, "lng": 77.5946, "name": "Bangalore Train Station", "type": "train" },
+            { "lat": 22.5726, "lng": 88.3639, "name": "Kolkata Bicycle Rental", "type": "bicycle" },
+            { "lat": 13.0827, "lng": 80.2707, "name": "Chennai EV Charging Station", "type": "ev" }
+        ];
+
+        const rideSharingOptions = [
+            { "name": "ZoomCar", "type": "Car", "availability": "High" },
+            { "name": "Ola Carpool", "type": "Car", "availability": "Medium" },
+            { "name": "Uber Pool", "type": "Car", "availability": "Low" }
+        ];
+
+        const publicTransitData = [
+            { "id": "MRT123", "status": "On Time", "location": "Mumbai" },
+            { "id": "BRT456", "status": "Delayed", "location": "Delhi" }
+        ];
+
+        const bikeScooterAvailability = [
+            { "location": "Bangalore", "bikes": 15, "scooters": 10 },
+            { "location": "Delhi", "bikes": 5, "scooters": 8 }
+        ];
+
+        const evChargingStations = [
+            { "location": "Chennai", "stations": 3 },
+            { "location": "Hyderabad", "stations": 2 }
+        ];
+
+        // Functions to display data
+        function displayRideSharingOptions() {
+            let html = '<h4>Ride-Sharing Options:</h4><ul>';
+            rideSharingOptions.forEach(option => {
+                html += `<li>${option.name} (${option.type}) - Availability: ${option.availability}</li>`;
+            });
+            html += '</ul>';
+            document.getElementById('rideshare-info').innerHTML = html;
+        }
+
+        function displayPublicTransit() {
+            let html = '<h4>Public Transit Tracking:</h4><ul>';
+            publicTransitData.forEach(transit => {
+                html += `<li>Transit ID: ${transit.id} - Status: ${transit.status} - Location: ${transit.location}</li>`;
+            });
+            html += '</ul>';
+            document.getElementById('public-transit-info').innerHTML = html;
+        }
+
+        function displayBikeScooterAvailability() {
+            let html = '<h4>Bike/Scooter Availability:</h4><ul>';
+            bikeScooterAvailability.forEach(location => {
+                html += `<li>Location: ${location.location} - Bikes: ${location.bikes} - Scooters: ${location.scooters}</li>`;
+            });
+            html += '</ul>';
+            document.getElementById('bikescooter-info').innerHTML = html;
+        }
+
+        function findEVStations() {
+            let html = '<h4>EV Charging Stations:</h4><ul>';
+            evChargingStations.forEach(station => {
+                html += `<li>Location: ${station.location} - Charging Stations: ${station.stations}</li>`;
+            });
+            html += '</ul>';
+            document.getElementById('ev-charging-info').innerHTML = html;
+        }
+
+        function optimizeDeliveryRoutes() {
+            document.getElementById('logistics-info').innerHTML = 'Logistics Optimization - Feature coming soon.';
+        }
+
+        function showRewards() {
+            document.getElementById('gamification-info').innerHTML = 'Rewards and Incentives - Feature coming soon.';
+        }
+
+        function showDashboard() {
+            document.getElementById('analytics-info').innerHTML = 'Sustainability Dashboard - Feature coming soon.';
+        }
+
+        // Map related functions
+        function updateTransportMarkers() {
+            const transportType = document.getElementById('transport-type').value;
+            const search = document.getElementById('search').value.toLowerCase();
+
+            // Clear existing markers
+            map.eachLayer(layer => {
+                if (layer instanceof L.Marker) {
+                    map.removeLayer(layer);
+                }
+            });
+
+            // Filter and add markers
+            transportPoints
+                .filter(point => (transportType === 'all' || point.type === transportType) &&
+                                (search === '' || point.name.toLowerCase().includes(search)))
+                .forEach(point => {
+                    L.marker([point.lat, point.lng])
+                        .addTo(map)
+                        .bindPopup(`<b>${point.name}</b><br>Type: ${point.type}`);
+                });
+        }
+
+        function searchLocation() {
+            const search = document.getElementById('search').value.toLowerCase();
+            const point = transportPoints.find(p => p.name.toLowerCase().includes(search));
+            if (point) {
+                map.setView([point.lat, point.lng], 14);
+            } else {
+                alert('Location not found.');
+            }
+        }
+
+        function calculateCarbonFootprint() {
+            const distance = parseFloat(document.getElementById('distance').value);
+            if (!isNaN(distance)) {
+                const carbonFootprint = (distance * 0.2).toFixed(2); // Example: 0.2 kg CO2 per km
+                document.getElementById('carbon-info').innerHTML = `Estimated Carbon Footprint: ${carbonFootprint} kg CO2`;
+            } else {
+                alert('Please enter a valid distance.');
+            }
+        }
+
+        // Toggle section content visibility
+        function toggleContent(id) {
+            const content = document.getElementById(id);
+            content.style.display = content.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Initialize map markers
+        updateTransportMarkers();
+        const responses = {
+            "find": {
+                "privacy policy": "Here's the [privacy policy](#).",
+                "terms of service": "You can view our [terms of service](#).",
+                "about us": "Learn more [About Us](#).",
+                "careers": "Check out our [Careers page](#).",
+                "team": "Meet our [Team](#).",
+                "blog": "Read our latest articles on our [Blog](#).",
+                "faq": "Visit the [FAQ page](#) for more information.",
+                "support": "Get help from our [Support page](#).",
+                "shipping policy": "Read our [Shipping Policy](#).",
+                "refund policy": "Details about our [Refund Policy](#)."
+            },
+            "navigate": {
+                "home": "Taking you to the [Home page](#).",
+                "services": "Visit our [Services page](#).",
+                "contact": "Here is the [Contact page](#).",
+                "products": "Explore our [Products page](#).",
+                "portfolio": "View our [Portfolio](#).",
+                "news": "Catch up on the latest [News](#).",
+                "events": "See upcoming [Events](#).",
+                "testimonials": "Read what our clients say on the [Testimonials page](#).",
+                "partners": "Meet our [Partners](#).",
+                "locations": "Find our [Locations](#)."
+            },
+            "faq": {
+                "return policy": "Our return policy allows returns within 30 days. [Read more](#).",
+                "contact info": "You can contact us at support@example.com or call +123456789.",
+                "opening hours": "We are open from 9 AM to 5 PM, Monday to Friday.",
+                "payment methods": "We accept credit cards, PayPal, and bank transfers.",
+                "membership": "Join our membership program [here](#).",
+                "discounts": "Find out about current discounts [here](#).",
+                "delivery time": "Delivery usually takes 3-5 business days.",
+                "international shipping": "Yes, we offer international shipping. [Learn more](#).",
+                "order tracking": "Track your order [here](#).",
+                "customer service": "Reach our customer service team [here](#)."
+            },
+            "recommendation": {
+                "gift": "I recommend checking out our 'Gifts' section [here](#).",
+                "popular items": "Our most popular items are listed [here](#).",
+                "new arrivals": "Check out our [New Arrivals](#).",
+                "best sellers": "Our [Best Sellers](#) are a great choice.",
+                "seasonal offers": "Explore our [Seasonal Offers](#).",
+                "specials": "Don’t miss our [Special Deals](#).",
+                "trending": "See what's [Trending](#) now.",
+                "for kids": "Browse our collection [for Kids](#).",
+                "for adults": "Explore items [for Adults](#).",
+                "on sale": "See all items currently [on Sale](#)."
+            }
+        };
+
+        // Toggle chatbot visibility
+        function toggleChat() {
+            const chatContainer = document.getElementById("chat-container");
+            if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
+                chatContainer.style.display = "block";
+            } else {
+                chatContainer.style.display = "none";
+            }
+        }
+
+        // Send message function
+        function sendMessage() {
+            const userInput = document.getElementById("user-input").value.trim();
+            if (userInput === "") return;
+
+            document.getElementById("user-input").value = ''; // Clear input after sending
+
+            const chatMessages = document.getElementById("chat-messages");
+
+            // Append user's message
+            chatMessages.innerHTML += `<div class="user-message">${userInput}</div>`;
+
+            // Get bot's response
+            const botResponse = getBotResponse(userInput);
+
+            // Append bot's response
+            chatMessages.innerHTML += `<div class="bot-message">${botResponse}</div>`;
+
+            // Auto-scroll to the bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Function to get bot's response
+        function getBotResponse(input) {
+            input = input.toLowerCase();
+
+            for (const category in responses) {
+                for (const key in responses[category]) {
+                    if (input.includes(key)) {
+                        return responses[category][key];
+                    }
+                }
+            }
+            return "I'm not sure about that. Could you please clarify?";
+        }
+    </script>
+</body>
+</html>

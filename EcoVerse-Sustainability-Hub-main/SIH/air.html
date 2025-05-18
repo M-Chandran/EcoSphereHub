@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Climate Resilience and Adaptation - Sustainability Hub</title>
+  <style>
+    /* Global Styles */
+    :root {
+      --primary-color: #ff6f61;
+      --secondary-color: #f15bb5;
+      --text-color: #333;
+      --background-color: #f0f0f0;
+      --hover-bg-color: #1c92d2;
+      --hover-text-color: #fff;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle, var(--background-color), #fff);
+      background-image: url('');
+      background-size: cover;
+      background-attachment: fixed;
+      color: var(--text-color);
+      overflow-x: hidden;
+    }
+    @keyframes fadeIn {
+      to {
+        opacity: 1; /* Fade in the body */
+      }
+    }
+    header {
+      background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5)), url('');
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      padding: 0 20px;
+      text-align: center;
+      font-size: 3rem;
+      line-height: 80px;
+      letter-spacing: 1.5px;
+      position: relative;
+      border-bottom: 10px solid var(--primary-color);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+      text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+    }
+
+    header::after {
+      content: '';
+      position: relative;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    }
+    nav {
+      background: rgba(0, 0, 0, 0.9);
+      padding: 20px 0;
+      text-align: center;
+      border-bottom: 2px solid var(--primary-color);
+      position: relative;
+    }
+
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
+
+    nav ul li {
+      display: inline-block;
+      margin: 0 20px;
+      position: relative;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.2rem;
+      padding: 12px 20px;
+      border-radius: 25px;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.4s ease, transform 0.4s ease;
+    }
+
+    nav ul li a::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 100%;
+      height: 4px;
+      background: var(--hover-bg-color);
+      transition: transform 0.4s ease;
+      transform: translateX(-50%) scaleX(0);
+      transform-origin: bottom left;
+    }
+
+    nav ul li a:hover::before {
+      transform: translateX(-50%) scaleX(1);
+    }
+
+    nav ul li a:hover {
+      color: var(--hover-text-color);
+      transform: scale(1.1);
+    }
+
+
+    section {
+      padding: 20px;
+      text-align: center;
+    }
+
+    section h2 {
+      color: #f7f7f7;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    section p {
+      font-size: 18px;
+      color: #dcdcdc;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    #resources {
+      background-color: #ffffff;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+      margin-bottom: 30px;
+    }
+
+    #resources h3 {
+      color: #333;
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    #resource-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    #resource-list li {
+      margin-bottom: 20px;
+    }
+
+    #resource-list a {
+      text-decoration: none;
+      font-size: 18px;
+      display: inline-block;
+      padding: 15px 30px;
+      border: 2px solid;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #resource-list a:hover {
+      color: #fff;
+      transform: scale(1.05);
+    }
+
+    #resource-list a span {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 30px;
+      height: 30px;
+      background-color: #4CAF50;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 16px;
+      transform: scale(0);
+      transition: all 0.3s ease;
+    }
+
+    #resource-list a.new span {
+      background-color: #FF9800;
+    }
+
+    iframe {
+      width: 100%;
+      height: 500px; /* Adjust height as needed */
+      border: none;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+    footer {
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      background-color: #333;
+      font-size: 14px;
+      border-top: 5px solid var(--primary-color);
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    footer p {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Air Quality Hub</h1>
+  </header>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="service.html">Service</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+  <section>
+  
+    <iframe src="https://waqi.info/"></iframe>
+  </section>
+  <footer>
+    <p>&copy; 2024 Sustainability Hub. All rights reserved.</p>
+  </footer>
+  
+  <script>
+    // Add animation to the "New" badge
+    const newBadge = document.querySelectorAll('#resource-list li a span');
+    newBadge.forEach(badge => {
+      badge.addEventListener('mouseenter', () => {
+        badge.style.transform = 'scale(1.2)';
+      });
+      badge.addEventListener('mouseleave', () => {
+        badge.style.transform = 'scale(0)';
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Website Chatbot</title>
+    <style>
+        /* Chatbot container styles */
+        #chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f8f9fa;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+        }
+
+        #chatbox {
+            padding: 10px;
+        }
+
+        #chat-messages {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .user-message {
+            text-align: right;
+            background-color: #d1e7dd;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        .bot-message {
+            text-align: left;
+            background-color: #e2e3e5;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        #chat-input {
+            display: flex;
+        }
+
+        #user-input {
+            width: 75%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+
+        button {
+            width: 20%;
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Chatbot toggle button */
+        #chat-toggle-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body>
+    <!-- Chatbot toggle button -->
+    <button id="chat-toggle-button" onclick="toggleChat()">💬</button>
+
+    <!-- Chatbot container -->
+    <div id="chat-container">
+        <div id="chatbox">
+            <div id="chat-messages"></div>
+            <div id="chat-input">
+                <input type="text" id="user-input" placeholder="Type your message here..." />
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Bot responses based on categories
+        const responses = {
+            "find": {
+                "privacy policy": "Here's the [privacy policy](#).",
+                "terms of service": "You can view our [terms of service](#).",
+                "about us": "Learn more [About Us](#).",
+                "careers": "Check out our [Careers page](#).",
+                "team": "Meet our [Team](#).",
+                "blog": "Read our latest articles on our [Blog](#).",
+                "faq": "Visit the [FAQ page](#) for more information.",
+                "support": "Get help from our [Support page](#).",
+                "shipping policy": "Read our [Shipping Policy](#).",
+                "refund policy": "Details about our [Refund Policy](#)."
+            },
+            "navigate": {
+                "home": "Taking you to the [Home page](#).",
+                "services": "Visit our [Services page](#).",
+                "contact": "Here is the [Contact page](#).",
+                "products": "Explore our [Products page](#).",
+                "portfolio": "View our [Portfolio](#).",
+                "news": "Catch up on the latest [News](#).",
+                "events": "See upcoming [Events](#).",
+                "testimonials": "Read what our clients say on the [Testimonials page](#).",
+                "partners": "Meet our [Partners](#).",
+                "locations": "Find our [Locations](#)."
+            },
+            "faq": {
+                "return policy": "Our return policy allows returns within 30 days. [Read more](#).",
+                "contact info": "You can contact us at support@example.com or call +123456789.",
+                "opening hours": "We are open from 9 AM to 5 PM, Monday to Friday.",
+                "payment methods": "We accept credit cards, PayPal, and bank transfers.",
+                "membership": "Join our membership program [here](#).",
+                "discounts": "Find out about current discounts [here](#).",
+                "delivery time": "Delivery usually takes 3-5 business days.",
+                "international shipping": "Yes, we offer international shipping. [Learn more](#).",
+                "order tracking": "Track your order [here](#).",
+                "customer service": "Reach our customer service team [here](#)."
+            },
+            "recommendation": {
+                "gift": "I recommend checking out our 'Gifts' section [here](#).",
+                "popular items": "Our most popular items are listed [here](#).",
+                "new arrivals": "Check out our [New Arrivals](#).",
+                "best sellers": "Our [Best Sellers](#) are a great choice.",
+                "seasonal offers": "Explore our [Seasonal Offers](#).",
+                "specials": "Don’t miss our [Special Deals](#).",
+                "trending": "See what's [Trending](#) now.",
+                "for kids": "Browse our collection [for Kids](#).",
+                "for adults": "Explore items [for Adults](#).",
+                "on sale": "See all items currently [on Sale](#)."
+            }
+        };
+
+        // Toggle chatbot visibility
+        function toggleChat() {
+            const chatContainer = document.getElementById("chat-container");
+            if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
+                chatContainer.style.display = "block";
+            } else {
+                chatContainer.style.display = "none";
+            }
+        }
+
+        // Send message function
+        function sendMessage() {
+            const userInput = document.getElementById("user-input").value.trim();
+            if (userInput === "") return;
+
+            document.getElementById("user-input").value = ''; // Clear input after sending
+
+            const chatMessages = document.getElementById("chat-messages");
+
+            // Append user's message
+            chatMessages.innerHTML += `<div class="user-message">${userInput}</div>`;
+
+            // Get bot's response
+            const botResponse = getBotResponse(userInput);
+
+            // Append bot's response
+            chatMessages.innerHTML += `<div class="bot-message">${botResponse}</div>`;
+
+            // Auto-scroll to the bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Function to get bot's response
+        function getBotResponse(input) {
+            input = input.toLowerCase();
+
+            for (const category in responses) {
+                for (const key in responses[category]) {
+                    if (input.includes(key)) {
+                        return responses[category][key];
+                    }
+                }
+            }
+            return "I'm not sure about that. Could you please clarify?";
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Water Usage Management Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            animation: fadeIn 1s ease-in forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        header {
+            background: linear-gradient(to right, #2196f3, #21cbf3);
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 32px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            background: linear-gradient(to right, #2196f3, #21cbf3);
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        main {
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .feature {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 280px;
+        }
+
+        .feature:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            color: #2196f3;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            color: #2196f3;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .feature-description {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .section {
+            display: none;
+            max-width: 900px;
+            margin: auto;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            margin-top: 20px;
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+
+        .section h3 {
+            color: #2196f3;
+            margin-bottom: 20px;
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section p {
+            color: #666;
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 20px;
+        }
+
+        canvas {
+            max-width: 100%;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+        }
+
+        .redirect-button {
+            background-color: #2196f3;
+            border: none;
+            color: white;
+            padding: 14px 28px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 18px;
+            margin-top: 30px;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: background-color 0.3s, transform 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .redirect-button:hover {
+            background-color: #1e88e5;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .fa-map-marked-alt {
+            margin-right: 10px;
+        }
+
+        .redirect-button::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background-color: rgba(255, 255, 255, 0.15);
+            transition: width 0.3s, height 0.3s, top 0.3s, left 0.3s;
+            border-radius: 50%;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+        }
+
+        .redirect-button:hover::before {
+            width: 0;
+            height: 0;
+            top: 50%;
+            left: 50%;
+        }
+
+        footer {
+            background-color: #003c8f;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <h1>Water Usage Management Hub</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="service.html">Service</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Section -->
+    <main>
+        <!-- Home Section with Features -->
+        <section id="home">
+            <div class="features">
+                <!-- Feature 1: Water Audits -->
+                <div class="feature" onclick="showSection('water-audit')">
+                    <span class="feature-icon">&#x1F4E6;</span>
+                    <h3 class="feature-title">Water Audits</h3>
+                    <p class="feature-description">Assess current water usage and identify areas for improvement.</p>
+                </div>
+
+                <!-- Feature 2: Recycling Systems -->
+                <div class="feature" onclick="showSection('recycling-systems')">
+                    <span class="feature-icon">&#x1F6E3;</span>
+                    <h3 class="feature-title">Recycling Systems</h3>
+                    <p class="feature-description">Implement systems for recycling and reusing water.</p>
+                </div>
+
+                <!-- Feature 3: Usage Optimization -->
+                <div class="feature" onclick="showSection('usage-optimization')">
+                    <span class="feature-icon">&#x1F4C8;</span>
+                    <h3 class="feature-title">Usage Optimization</h3>
+                    <p class="feature-description">Optimize water usage to minimize waste.</p>
+                </div>
+
+                <!-- Feature 4: Conservation Strategies -->
+                <div class="feature" onclick="showSection('conservation-strategies')">
+                    <span class="feature-icon">&#x1F6AA;</span>
+                    <h3 class="feature-title">Conservation Strategies</h3>
+                    <p class="feature-description">Develop strategies for long-term water conservation.</p>
+                </div>
+
+                <!-- Feature 5: Leak Detection Systems -->
+                <div class="feature" onclick="showSection('leak-detection')">
+                    <span class="feature-icon">&#x1F4C8;</span>
+                    <h3 class="feature-title">Leak Detection Systems</h3>
+                    <p class="feature-description">Identify and repair water leaks in real-time.</p>
+                </div>
+
+                <!-- Feature 6: Leak Detection Map -->
+                <div class="feature" onclick="showSection('leak-detection-map')">
+                    <span class="feature-icon">&#x1F4C8;</span>
+                    <h3 class="feature-title">Leak Detection Map</h3>
+                    <p class="feature-description">Real-time map showing areas with detected leaks.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Water Audits Section -->
+        <section id="water-audit" class="section">
+            <h3>Water Audits</h3>
+            <p>Comprehensive assessment of your current water usage, identifying inefficiencies and areas for
+                improvement. Our water audit service includes:</p>
+            <ul>
+                <li>Usage assessment</li>
+                <li>Identification of inefficiencies</li>
+                <li>Recommendations for improvement</li>
+            </ul>
+            <div class="form-container">
+                <form>
+                    <input type="text" placeholder="Enter Location" required>
+                    <button type="submit" class="redirect-button"><i class="fas fa-map-marked-alt"></i>Go to Location
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Recycling Systems Section -->
+        <section id="recycling-systems" class="section">
+            <h3>Recycling Systems</h3>
+            <p>Implement systems to recycle and reuse water in your operations. Our recycling systems offer:</p>
+            <ul>
+                <li>Advanced filtration technologies</li>
+                <li>Reuse of greywater and wastewater</li>
+                <li>Cost-effective solutions for long-term sustainability</li>
+            </ul>
+        </section>
+
+        <!-- Usage Optimization Section -->
+        <section id="usage-optimization" class="section">
+            <h3>Usage Optimization</h3>
+            <p>Optimize your water usage to minimize waste and reduce costs. Our usage optimization services include:
+            </p>
+            <ul>
+                <li>Flow rate adjustments</li>
+                <li>Pressure management</li>
+                <li>Real-time monitoring and adjustments</li>
+            </ul>
+        </section>
+
+        <!-- Conservation Strategies Section -->
+        <section id="conservation-strategies" class="section">
+            <h3>Conservation Strategies</h3>
+            <p>Develop and implement strategies for long-term water conservation. Our conservation strategies include:
+            </p>
+            <ul>
+                <li>Drought-resistant landscaping</li>
+                <li>Efficient irrigation systems</li>
+                <li>Public awareness campaigns</li>
+            </ul>
+        </section>
+
+        <!-- Leak Detection Section -->
+        <section id="leak-detection" class="section">
+            <h3>Leak Detection Systems</h3>
+            <p>Identify and repair water leaks quickly and efficiently. Our leak detection systems feature:</p>
+            <ul>
+                <li>Advanced sensor technologies</li>
+                <li>Real-time alerts</li>
+                <li>Automated repair scheduling</li>
+            </ul>
+        </section>
+
+        <!-- Leak Detection Map Section -->
+        <section id="leak-detection-map" class="section">
+            <h3>Leak Detection Map</h3>
+            <p>View a real-time map showing areas with detected water leaks. Our map features:</p>
+            <ul>
+                <li>Interactive map interface</li>
+                <li>Real-time updates</li>
+                <li>Leak severity indicators</li>
+            </ul>
+            <canvas id="leakMap"></canvas>
+            <script>
+                var ctx = document.getElementById('leakMap').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'bubble',
+                    data: {
+                        datasets: [{
+                            label: 'Leak Detected',
+                            data: [{
+                                x: 10,
+                                y: 20,
+                                r: 15
+                            }, {
+                                x: 15,
+                                y: 10,
+                                r: 10
+                            }, {
+                                x: 20,
+                                y: 25,
+                                r: 20
+                            }],
+                            backgroundColor: '#2196f3'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Longitude'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Latitude'
+                                }
+                            }
+                        }
+                    }
+                });
+            </script>
+        </section>
+
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>Water Usage Management Hub &copy; 2024. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                section.style.display = 'none';
+            });
+
+            const selectedSection = document.getElementById(sectionId);
+            selectedSection.style.display = 'block';
+            selectedSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+
+</html>

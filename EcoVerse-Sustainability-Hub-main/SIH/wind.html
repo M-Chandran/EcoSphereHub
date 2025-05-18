@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wind Power Plant Energy Production</title>
+  <style>
+         body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      color: #444;
+    }
+
+    header {
+  background-image: url('https://i.pinimg.com/564x/bd/f7/f8/bdf7f87844a317f7eff8e14fd1b79bae.jpg');
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  padding: 20px 0;
+  
+  text-align: center;
+  font-size: 24px;
+  letter-spacing: 1px;
+}
+nav {
+      background: url('https://i.pinimg.com/564x/bd/f7/f8/bdf7f87844a317f7eff8e14fd1b79bae.jpg'); /* Background image */
+      background-size: cover; /* Cover the entire area */
+      padding: 15px 0;
+      text-align: center;
+    }
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    nav ul li {
+      display: inline-block;
+      margin-right: 20px;
+      position: relative; /* Position relative for hover effect */
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 18px;
+      transition: color 0.3s ease;
+      display: block;
+      padding: 10px 20px;
+      border-radius: 20px; /* Rounded corners for nav links */
+    }
+    nav ul li a:hover {
+      color: #fff;
+      text-decoration: none;
+      background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent background color on hover */
+    }
+    section {
+      padding: 80px 0;
+      text-align: center;
+    }
+    footer {
+      background-color: #3D5A80;
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      font-size: 14px;
+    }
+
+  
+    .main-container {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  text-align: center;
+  margin: 20px auto; /* Center horizontally with auto margins */
+  width: 700px;
+  transition: transform 0.3s ease-in-out;
+  display: flex; /* Make it a flex container */
+  flex-direction: column; /* Align children vertically */
+  align-items: center; /* Align children horizontally */
+}
+
+
+    .main-container:hover {
+      transform: translateY(-5px);
+    }
+
+    .sub-container {
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      margin: 20px;
+      height: 200px;
+      width: 300px;
+      animation: fadeIn 2s ease-out;
+      position: relative;
+    }
+
+    .sub-container:nth-child(odd) {
+      background-color: #f9f9f9;
+    }
+
+    .sub-container:nth-child(even) {
+      background-color: #f1f1f1;
+    }
+
+    .sub-container:nth-child(3n) {
+      background-color: #fdf5e6;
+    }
+
+    .sub-container:nth-child(4n) {
+      background-color: #f0ffff;
+    }
+
+    .sub-container:nth-child(5n) {
+      background-color: #ffe4e1;
+    }
+
+    .sub-container:nth-child(6n) {
+      background-color: #e6e6fa;
+    }
+
+    .sub-container:nth-child(7n) {
+      background-color: #f5f5dc;
+    }
+
+    .sub-container:nth-child(8n) {
+      background-color: #d3d3d3;
+    }
+
+    .sub-container:nth-child(9n) {
+      background-color: #ffffe0;
+    }
+
+    .sub-container:nth-child(10n) {
+      background-color: #b0c4de;
+    }
+
+    .horizontal-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      font-size: 32px;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .energy-counter {
+      font-size: 24px;
+      color: #f15bb5;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .unit {
+      font-size: 18px;
+      color: #555;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 20px;
+      background-color: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background-color: #4caf50;
+      width: 0;
+      transition: width 10s ease;
+    }
+
+    .plant-info {
+      margin-top: 20px;
+    }
+
+    .plant-info p {
+      margin: 5px 0;
+    }
+
+    /* Icon styling */
+    .map-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 30px; /* Adjust icon size */
+      height: 30px; /* Adjust icon size */
+    }
+
+    .button {
+      background-color: #4caf50;
+      border: navajowhite;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: solid;
+      display: inline-block;
+      font-size: 16px;
+      margin:10px 20px;
+      cursor:pointer;
+      border-radius: 10px;}
+      
+    .button:hover {
+      background-color: #45a049;
+    }
+    .p{
+      font-size: 20px;
+      font-weight: bold;
+    }
+    #chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f8f9fa;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+        }
+
+        #chatbox {
+            padding: 10px;
+        }
+
+        #chat-messages {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .user-message {
+            text-align: right;
+            background-color: #d1e7dd;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        .bot-message {
+            text-align: left;
+            background-color: #e2e3e5;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        #chat-input {
+            display: flex;
+        }
+
+        #user-input {
+            width: 75%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+
+        button {
+            width: 20%;
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Chatbot toggle button */
+        #chat-toggle-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+  </style>
+</head>
+<body>
+  <header>
+    <p class="animate__animated animate__fadeInDown">Welcome to Sustainability Hub</p>
+  </header>
+  <!-- Navigation Bar -->
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="service.html">Service</a></li>
+      <li><a href="renewable_energy.html">Renewable_energy</a></li>
+
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
+  <button id="chat-toggle-button" onclick="toggleChat()">💬</button>
+
+  <!-- Chatbot container -->
+  <div id="chat-container">
+      <div id="chatbox">
+          <div id="chat-messages"></div>
+          <div id="chat-input">
+              <input type="text" id="user-input" placeholder="Type your message here..." />
+              <button onclick="sendMessage()">Send</button>
+          </div>
+      </div>
+  </div>
+  <div class="main-container">
+    <h1>Total Energy Produced per Day:</h1>
+    <div class="progress-bar">
+      <div class="progress" id="total-progress"></div>
+    </div>
+    <div class="energy-counter" id="total-energy-display">0</div>
+    <div class="unit">MWh</div>
+    <div class="total-capacity">Total Max Capacity: <span id="total-max-capacity"></span> MW</div>
+  </div>
+
+  <!-- Sub-containers for Wind Power Plants -->
+  <div class="horizontal-container" id="plant-containers"></div>
+  <script>
+      const responses = {
+            "find": {
+                "privacy policy": "Here's the [privacy policy](#).",
+                "terms of service": "You can view our [terms of service](#).",
+                "about us": "Learn more [About Us](#).",
+                "careers": "Check out our [Careers page](#).",
+                "team": "Meet our [Team](#).",
+                "blog": "Read our latest articles on our [Blog](#).",
+                "faq": "Visit the [FAQ page](#) for more information.",
+                "support": "Get help from our [Support page](#).",
+                "shipping policy": "Read our [Shipping Policy](#).",
+                "refund policy": "Details about our [Refund Policy](#)."
+            },
+            "navigate": {
+                "home": "Taking you to the [Home page](#).",
+                "services": "Visit our [Services page](#).",
+                "contact": "Here is the [Contact page](#).",
+                "products": "Explore our [Products page](#).",
+                "portfolio": "View our [Portfolio](#).",
+                "news": "Catch up on the latest [News](#).",
+                "events": "See upcoming [Events](#).",
+                "testimonials": "Read what our clients say on the [Testimonials page](#).",
+                "partners": "Meet our [Partners](#).",
+                "locations": "Find our [Locations](#)."
+            },
+            "faq": {
+                "return policy": "Our return policy allows returns within 30 days. [Read more](#).",
+                "contact info": "You can contact us at support@example.com or call +123456789.",
+                "opening hours": "We are open from 9 AM to 5 PM, Monday to Friday.",
+                "payment methods": "We accept credit cards, PayPal, and bank transfers.",
+                "membership": "Join our membership program [here](#).",
+                "discounts": "Find out about current discounts [here](#).",
+                "delivery time": "Delivery usually takes 3-5 business days.",
+                "international shipping": "Yes, we offer international shipping. [Learn more](#).",
+                "order tracking": "Track your order [here](#).",
+                "customer service": "Reach our customer service team [here](#)."
+            },
+            "recommendation": {
+                "gift": "I recommend checking out our 'Gifts' section [here](#).",
+                "popular items": "Our most popular items are listed [here](#).",
+                "new arrivals": "Check out our [New Arrivals](#).",
+                "best sellers": "Our [Best Sellers](#) are a great choice.",
+                "seasonal offers": "Explore our [Seasonal Offers](#).",
+                "specials": "Don’t miss our [Special Deals](#).",
+                "trending": "See what's [Trending](#) now.",
+                "for kids": "Browse our collection [for Kids](#).",
+                "for adults": "Explore items [for Adults](#).",
+                "on sale": "See all items currently [on Sale](#)."
+            }
+        };
+
+        // Toggle chatbot visibility
+        function toggleChat() {
+            const chatContainer = document.getElementById("chat-container");
+            if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
+                chatContainer.style.display = "block";
+            } else {
+                chatContainer.style.display = "none";
+            }
+        }
+
+        // Send message function
+        function sendMessage() {
+            const userInput = document.getElementById("user-input").value.trim();
+            if (userInput === "") return;
+
+            document.getElementById("user-input").value = ''; // Clear input after sending
+
+            const chatMessages = document.getElementById("chat-messages");
+
+            // Append user's message
+            chatMessages.innerHTML += `<div class="user-message">${userInput}</div>`;
+
+            // Get bot's response
+            const botResponse = getBotResponse(userInput);
+
+            // Append bot's response
+            chatMessages.innerHTML += `<div class="bot-message">${botResponse}</div>`;
+
+            // Auto-scroll to the bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Function to get bot's response
+        function getBotResponse(input) {
+            input = input.toLowerCase();
+
+            for (const category in responses) {
+                for (const key in responses[category]) {
+                    if (input.includes(key)) {
+                        return responses[category][key];
+                    }
+                }
+            }
+            return "I'm not sure about that. Could you please clarify?";
+        }
+   {
+    const ratedCapacities = [1500, 1064, 528, 278, 259, 144, 126, 100.8, 100.5, 100]; // Capacities of wind power plants in MW
+const capacityFactor = 0.030; // Capacity factor for wind turbines
+const hoursInDay = 12;
+
+let totalEnergyProduced = 0;
+
+// Create sub-containers for each wind power plant
+const plantNames = [
+    "Muppandal Wind Farm",
+    "Jaisalmer Wind Park",
+    "Brahmanvel Wind Farm",
+    "Dhalgaon Wind Farm",
+    "Vankusawade Wind Park",
+    "Vaspet",
+    "Tuljapur",
+    "Beluguppa Wind Park",
+    "Mamatkheda Wind Park",
+    "Anantapur Wind Park"
+];
+
+const learnMoreLinks = [
+    "https://www.scribd.com/presentation/406500676/Case-Study-of-Muppandal-Windfarm",
+    "https://en.wikipedia.org/wiki/Jaisalmer_Wind_Park",
+    "https://en.wikipedia.org/wiki/Wind_power_in_India",
+    "https://www.nsenergybusiness.com/features/top-wind-power-farms-india/",
+    "https://www.nsenergybusiness.com/features/top-wind-power-farms-india/",
+    "https://www.nsenergybusiness.com/features/top-wind-power-farms-india/",
+    "https://www.nsenergybusiness.com/features/top-wind-power-farms-india/",
+    "https://www.nsenergybusiness.com/features/top-wind-power-farms-india/",
+    "https://www.nsenergybusiness.com/features/top-wind-power-farms-india/",
+    "https://www.nsenergybusiness.com/features/top-wind-power-farms-india/"
+];
+
+const mapIconLinks = [
+    "https://www.google.com/maps/place/Muppandal+Wind+Farm/@8.2649025,77.5641934,17z/data=!3m1!4b1!4m6!3m5!1s0x3b048aca05d7e97b:0x67b81ef51284e2aa!8m2!3d8.2649025!4d77.5667683!16s%2Fg%2F11f5hlb71y?entry=ttu",
+    "https://www.google.com/maps/search/jaisalmer+wind+park+rajasthan/@26.746631,70.3507122,9z/data=!3m1!4b1?entry=ttu",
+    "https://www.google.com/maps/search/brahmanvel+wind+farm/@8.6073562,77.3143391,10z/data=!3m1!4b1?entry=ttu",
+    "https://www.google.com/maps/search/Dhalgaon+Wind+Farm/@16.7915864,74.2152258,9.09z?entry=ttu",
+    "https://www.google.com/maps/search/Vankusawade+Wind+Park/@17.4740365,73.8110919,14z/data=!3m1!4b1?entry=ttu",
+    "https://www.google.com/maps/place/Renew+power+Vaspet+123+office/@17.08925,75.3369625,17z/data=!3m1!4b1!4m6!3m5!1s0x3bc6c1e40e95ca1b:0x8a32fb11146380ea!8m2!3d17.0892449!4d75.3395374!16s%2Fg%2F11pc4l8lt9?entry=ttu",
+    "https://www.google.com/maps/place/Tuljapur,+Maharashtra+413601/@18.0074046,76.0522419,14z/data=!3m1!4b1!4m6!3m5!1s0x3bc5be0a40876f91:0x57fb8af728b88e9d!8m2!3d18.0087239!4d76.0708812!16zL20vMGNjMjBj?entry=ttu",
+    "https://www.google.com/maps/place/Suzlon+Wind+Project/@14.7143232,77.1315602,17z/data=!3m1!4b1!4m6!3m5!1s0x3bb72b08ffffffff:0x98f0aa816795bf26!8m2!3d14.714318!4d77.1341351!16s%2Fg%2F11dxcthnrr?entry=ttu",
+    "https://www.google.com/maps/search/Mamatkheda+Wind+Park/@23.4177173,75.5086009,8z/data=!3m1!4b1?entry=ttu",
+    "https://www.google.com/maps/place/Wind+World+India+Limited/@14.6657408,77.5986916,17z/data=!3m1!4b1!4m6!3m5!1s0x3bb14ae462c3d8a9:0xcd03580d34f28bc8!8m2!3d14.6657356!4d77.6012665!16s%2Fg%2F11csqckp0b?entry=ttu"
+];
+
+const plantContainers = document.getElementById("plant-containers");
+
+for (let i = 0; i < plantNames.length; i++) {
+    const container = document.createElement("div");
+    container.classList.add("sub-container");
+    container.innerHTML = `
+        <div class="plant-info">
+            <h2>${plantNames[i]}</h2>
+            <div class="progress-bar">
+                <div class="progress" id="progress${i + 1}"></div>
+            </div>
+            <p>Energy Produced: <span class="energy-counter" id="energy-display${i + 1}">0</span> MWh</p>
+            <button class="button" onclick="window.open('${learnMoreLinks[i]}', '_blank')">LEARN MORE</button>
+            <a class="button-link" href="${mapIconLinks[i]}" target="_blank"><img src="map_icon.png" class="map-icon" alt="Map Icon"></a>
+        </div>
+    `;
+    plantContainers.appendChild(container);
+}
+
+// Update individual plant energy production
+const plantEnergyDisplays = [];
+
+for (let i = 0; i < ratedCapacities.length; i++) {
+    const energyDisplay = document.getElementById(`energy-display${i + 1}`);
+    plantEnergyDisplays.push(energyDisplay);
+}
+
+const increment = 0.001; // Adjust the increment for smoother animation
+
+const interval = setInterval(() => {
+    let allPlantsComplete = true;
+
+    for (let i = 0; i < ratedCapacities.length; i++) {
+        const currentEnergy = parseFloat(plantEnergyDisplays[i].textContent);
+        const energyToProduce = ratedCapacities[i] * capacityFactor * hoursInDay;
+
+        if (currentEnergy < energyToProduce) {
+            allPlantsComplete = false;
+            const newEnergy = currentEnergy + increment * energyToProduce;
+            totalEnergyProduced += increment * energyToProduce;
+            plantEnergyDisplays[i].textContent = newEnergy.toFixed(2);
+
+            const progress = document.getElementById(`progress${i + 1}`);
+            progress.style.width = (newEnergy / energyToProduce) * 100 + "%";
+        }
+    }
+
+    document.getElementById("total-energy-display").textContent = totalEnergyProduced.toFixed(2);
+
+    const totalProgress = document.getElementById("total-progress");
+    totalProgress.style.width = (totalEnergyProduced / (ratedCapacities.reduce((a, b) => a + b, 0) * capacityFactor * hoursInDay)) * 100 + "%";
+
+    // Calculate and display total max capacity
+    const totalMaxCapacity = ratedCapacities.reduce((acc, curr) => acc + curr, 0);
+    document.getElementById("total-max-capacity").textContent = totalMaxCapacity.toFixed(2);
+
+    if (allPlantsComplete) {
+        clearInterval(interval); // Stop the interval when all plants have reached their capacity
+    }
+}, 5000); // Change the interval duration to slow down the animation (in milliseconds)ration to slow down the animation (in milliseconds)
+    }
+
+    window.onload = function() {
+      animateCounter();
+    };
+  </script>
+</body>
+</html>

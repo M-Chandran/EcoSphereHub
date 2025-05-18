@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Energy Efficiency Solutions</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background: #f0f4f8;
+        }
+        header {
+            background-color: #1e272e;
+            color: #fff;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .main-content {
+            padding: 2rem;
+        }
+        .section {
+            margin-bottom: 2rem;
+        }
+        .feature-container {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .feature {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            flex: 1;
+            min-width: 280px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #00b894;
+        }
+        .feature-title {
+            font-size: 1.5rem;
+            margin: 0.5rem 0;
+            font-weight: 600;
+        }
+        .feature-description {
+            font-size: 1rem;
+            color: #636e72;
+        }
+        .chart-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .accordion {
+            background-color: #00b894;
+            color: #fff;
+            cursor: pointer;
+            padding: 1rem;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 1.1rem;
+            width: 100%;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+        .accordion.active, .accordion:hover {
+            background-color: #01a76f;
+        }
+        .panel {
+            padding: 0 1rem;
+            display: none;
+            overflow: hidden;
+            background-color: #e3f2fd;
+            border-radius: 0 0 8px 8px;
+        }
+        .case-study {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1rem;
+        }
+        .filter-container {
+            margin-bottom: 1rem;
+        }
+        .redirect-button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            color: #fff;
+            background: #00b894;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 1.1rem;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        .redirect-button:hover {
+            background: #01a76f;
+        }
+        footer {
+            background: #1e272e;
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.875rem;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background: #fff;
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            position: relative;
+        }
+        .modal-header, .modal-footer {
+            padding: 1rem;
+            text-align: center;
+        }
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        .close {
+            color: #aaa;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .btn {
+            padding: 0.5rem 1rem;
+            color: #fff;
+            background: #00b894;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background: #01a76f;
+        }
+        .embed-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+            max-width: 100%;
+            background: #000;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .embed-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .ar-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .ar-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        #chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f8f9fa;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+        }
+
+        #chatbox {
+            padding: 10px;
+        }
+
+        #chat-messages {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .user-message {
+            text-align: right;
+            background-color: #d1e7dd;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        .bot-message {
+            text-align: left;
+            background-color: #e2e3e5;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        #chat-input {
+            display: flex;
+        }
+
+        #user-input {
+            width: 75%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+
+        button {
+            width: 20%;
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Chatbot toggle button */
+        #chat-toggle-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Advanced Energy Efficiency Solutions</h1>
+    </header>
+    <button id="chat-toggle-button" onclick="toggleChat()">💬</button>
+
+    <!-- Chatbot container -->
+    <div id="chat-container">
+        <div id="chatbox">
+            <div id="chat-messages"></div>
+            <div id="chat-input">
+                <input type="text" id="user-input" placeholder="Type your message here..." />
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <!-- Services Section -->
+        <section id="services" class="section">
+            <h2>Our Cutting-Edge Services</h2>
+            <div class="feature-container">
+                <div class="feature" onclick="showModal('energy-audit')">
+                    <span class="feature-icon"><i class="fas fa-database"></i></span>
+                    <h3 class="feature-title">IoT-Enabled Energy Audits</h3>
+                    <p class="feature-description">Leverage IoT sensors and machine learning to conduct real-time energy audits with precision analytics.</p>
+                </div>
+                <div class="feature" onclick="showModal('efficiency-recommendations')">
+                    <span class="feature-icon"><i class="fas fa-cogs"></i></span>
+                    <h3 class="feature-title">AI-Driven Efficiency Strategies</h3>
+                    <p class="feature-description">Implement AI algorithms to provide personalized efficiency recommendations based on predictive analytics.</p>
+                </div>
+                <div class="feature" onclick="showModal('technology-upgrades')">
+                    <span class="feature-icon"><i class="fas fa-robot"></i></span>
+                    <h3 class="feature-title">Smart Technology Integration</h3>
+                    <p class="feature-description">Integrate cutting-edge technologies with automated systems for enhanced energy management and real-time optimization.</p>
+                </div>
+                <div class="feature" onclick="showModal('case-studies')">
+                    <span class="feature-icon"><i class="fas fa-tachometer-alt"></i></span>
+                    <h3 class="feature-title">Impactful Case Studies</h3>
+                    <p class="feature-description">Explore detailed case studies showcasing transformative impacts with advanced data visualization.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Data Visualization -->
+        <section id="charts" class="section">
+            <h3>Real-Time Energy Efficiency Data</h3>
+            <div class="chart-container">
+                <canvas id="energyChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Augmented Reality Experience -->
+        <section id="ar" class="section">
+            <h3>Augmented Reality Energy Audit Preview</h3>
+            <div class="ar-container">
+                <iframe src="https://example.com/ar-energy-audit" title="AR Energy Audit"></iframe>
+            </div>
+        </section>
+
+        <!-- Accordion for Service Details -->
+        <section id="accordion" class="section">
+            <button class="accordion">IoT-Enabled Energy Audits</button>
+            <div class="panel">
+                <p>Our IoT-enabled energy audits utilize a network of smart sensors placed throughout the facility. These sensors gather real-time data on energy consumption, which is then analyzed using machine learning algorithms to detect inefficiencies and predict future energy needs. This approach allows for precise diagnostics and actionable insights tailored to your specific setup, ensuring maximum energy savings and operational efficiency.</p>
+            </div>
+
+            <button class="accordion">AI-Driven Efficiency Strategies</button>
+            <div class="panel">
+                <p>Our advanced AI models analyze historical and real-time data to generate customized efficiency recommendations. We use predictive analytics to model different scenarios and provide detailed strategic plans with cost-benefit analyses, helping you optimize energy usage and operational efficiency.</p>
+            </div>
+
+            <button class="accordion">Smart Technology Integration</button>
+            <div class="panel">
+                <p>We facilitate the integration of smart grids, automated energy management systems, and cutting-edge sensors. Our comprehensive service includes everything from initial planning and ROI analysis to seamless implementation and continuous monitoring, ensuring that you achieve optimal energy efficiency with the latest technologies.</p>
+            </div>
+
+            <button class="accordion">Impactful Case Studies</button>
+            <div class="panel">
+                <p>Our case studies provide in-depth analyses of real-world implementations, featuring sophisticated data visualizations and comprehensive insights. Each study includes detailed information on challenges encountered, innovative solutions deployed, and measurable outcomes achieved, demonstrating the effectiveness and value of our advanced services.</p>
+            </div>
+        </section>
+
+        <!-- Filter Section -->
+        <section id="filter" class="section">
+            <div class="filter-container">
+                <label for="filter-options">Filter Services:</label>
+                <select id="filter-options" onchange="applyFilter()">
+                    <option value="all">All Services</option>
+                    <option value="audit">IoT-Enabled Energy Audits</option>
+                    <option value="recommendations">AI-Driven Efficiency Strategies</option>
+                    <option value="upgrades">Smart Technology Integration</option>
+                    <option value="studies">Impactful Case Studies</option>
+                </select>
+            </div>
+            <a href="#" class="redirect-button">See More Details</a>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Revolutionary Energy Solutions Inc. All rights reserved.</p>
+    </footer>
+
+    <!-- Modal for Detailed Service Information -->
+    <div id="serviceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Service Details</h2>
+            </div>
+            <div class="modal-body">
+                <p id="modal-text">Details about the selected service will appear here.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn">Close</button>
+            </div>
+        </div>
+        <button id="chat-toggle-button" onclick="toggleChat()">💬</button>
+
+        <!-- Chatbot container -->
+        
+    </div>
+
+    <!-- Script to handle charts and modal -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Chart.js Example
+        const ctx = document.getElementById('energyChart').getContext('2d');
+        const energyChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Energy Efficiency Improvement (%)',
+                    data: [10, 20, 30, 40, 50, 60],
+                    backgroundColor: 'rgba(98, 182, 239, 0.5)',
+                    borderColor: 'rgba(98, 182, 239, 1)',
+                    borderWidth: 2,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Months'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Improvement (%)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `${context.dataset.label}: ${context.raw}%`;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Accordion Functionality
+        const accordions = document.querySelectorAll('.accordion');
+        accordions.forEach(acc => {
+            acc.addEventListener('click', function() {
+                this.classList.toggle('active');
+                const panel = this.nextElementSibling;
+                panel.style.display = panel.style.display === 'block' ? 'none' : 'block';
+            });
+        });
+
+        // Modal Functionality
+        const modal = document.getElementById('serviceModal');
+        const closeModal = document.querySelector('.modal .close');
+        const modalText = document.getElementById('modal-text');
+
+        function showModal(service) {
+            let content = '';
+            switch (service) {
+                case 'energy-audit':
+                    content = 'Our IoT-enabled energy audits utilize a network of smart sensors placed throughout the facility. These sensors gather real-time data on energy consumption, which is then analyzed using machine learning algorithms to detect inefficiencies and predict future energy needs. This approach allows for precise diagnostics and actionable insights tailored to your specific setup, ensuring maximum energy savings and operational efficiency.';
+                    break;
+                case 'efficiency-recommendations':
+                    content = 'By analyzing historical and real-time data with advanced AI models, we generate customized recommendations for improving energy efficiency. Our system simulates various scenarios and assesses potential impacts, providing detailed cost-benefit analyses and actionable strategies for optimization. This ensures that you receive the most effective recommendations tailored to your unique needs and circumstances.';
+                    break;
+                case 'technology-upgrades':
+                    content = 'We facilitate the integration of state-of-the-art technologies, including smart grids, automated energy management systems, and IoT-based monitoring solutions. Our service encompasses comprehensive ROI analysis, ongoing performance tracking, and continuous optimization. We ensure that new technologies are seamlessly integrated and aligned with your goals for sustained energy efficiency improvements.';
+                    break;
+                case 'case-studies':
+                    content = 'Our case studies are meticulously detailed, featuring comprehensive data visualizations and analysis of real-world implementations. Each case study outlines the challenges faced, the innovative solutions applied, and the measurable results achieved. This provides valuable insights into how our services have been successfully applied across different scenarios and industries.';
+                    break;
+            }
+            modalText.textContent = content;
+            modal.style.display = 'block';
+        }
+
+        closeModal.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        function applyFilter() {
+            const filterValue = document.getElementById('filter-options').value;
+            alert('Filter applied: ' + filterValue);
+        }
+        const responses = {
+            "find": {
+                "privacy policy": "Here's the [privacy policy](#).",
+                "terms of service": "You can view our [terms of service](#).",
+                "about us": "Learn more [About Us](#).",
+                "careers": "Check out our [Careers page](#).",
+                "team": "Meet our [Team](#).",
+                "blog": "Read our latest articles on our [Blog](#).",
+                "faq": "Visit the [FAQ page](#) for more information.",
+                "support": "Get help from our [Support page](#).",
+                "shipping policy": "Read our [Shipping Policy](#).",
+                "refund policy": "Details about our [Refund Policy](#)."
+            },
+            "navigate": {
+                "home": "Taking you to the [Home page](#).",
+                "services": "Visit our [Services page](#).",
+                "contact": "Here is the [Contact page](#).",
+                "products": "Explore our [Products page](#).",
+                "portfolio": "View our [Portfolio](#).",
+                "news": "Catch up on the latest [News](#).",
+                "events": "See upcoming [Events](#).",
+                "testimonials": "Read what our clients say on the [Testimonials page](#).",
+                "partners": "Meet our [Partners](#).",
+                "locations": "Find our [Locations](#)."
+            },
+            "faq": {
+                "return policy": "Our return policy allows returns within 30 days. [Read more](#).",
+                "contact info": "You can contact us at support@example.com or call +123456789.",
+                "opening hours": "We are open from 9 AM to 5 PM, Monday to Friday.",
+                "payment methods": "We accept credit cards, PayPal, and bank transfers.",
+                "membership": "Join our membership program [here](#).",
+                "discounts": "Find out about current discounts [here](#).",
+                "delivery time": "Delivery usually takes 3-5 business days.",
+                "international shipping": "Yes, we offer international shipping. [Learn more](#).",
+                "order tracking": "Track your order [here](#).",
+                "customer service": "Reach our customer service team [here](#)."
+            },
+            "recommendation": {
+                "gift": "I recommend checking out our 'Gifts' section [here](#).",
+                "popular items": "Our most popular items are listed [here](#).",
+                "new arrivals": "Check out our [New Arrivals](#).",
+                "best sellers": "Our [Best Sellers](#) are a great choice.",
+                "seasonal offers": "Explore our [Seasonal Offers](#).",
+                "specials": "Don’t miss our [Special Deals](#).",
+                "trending": "See what's [Trending](#) now.",
+                "for kids": "Browse our collection [for Kids](#).",
+                "for adults": "Explore items [for Adults](#).",
+                "on sale": "See all items currently [on Sale](#)."
+            }
+        };
+
+        // Toggle chatbot visibility
+        function toggleChat() {
+            const chatContainer = document.getElementById("chat-container");
+            if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
+                chatContainer.style.display = "block";
+            } else {
+                chatContainer.style.display = "none";
+            }
+        }
+
+        // Send message function
+        function sendMessage() {
+            const userInput = document.getElementById("user-input").value.trim();
+            if (userInput === "") return;
+
+            document.getElementById("user-input").value = ''; // Clear input after sending
+
+            const chatMessages = document.getElementById("chat-messages");
+
+            // Append user's message
+            chatMessages.innerHTML += `<div class="user-message">${userInput}</div>`;
+
+            // Get bot's response
+            const botResponse = getBotResponse(userInput);
+
+            // Append bot's response
+            chatMessages.innerHTML += `<div class="bot-message">${botResponse}</div>`;
+
+            // Auto-scroll to the bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Function to get bot's response
+        function getBotResponse(input) {
+            input = input.toLowerCase();
+
+            for (const category in responses) {
+                for (const key in responses[category]) {
+                    if (input.includes(key)) {
+                        return responses[category][key];
+                    }
+                }
+            }
+            return "I'm not sure about that. Could you please clarify?";
+        }
+    </script>
+</body>
+</html>

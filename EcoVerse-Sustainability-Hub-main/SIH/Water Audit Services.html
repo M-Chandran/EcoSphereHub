@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mine Rehabilitation and Carbon Offset Certification</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        header {
+            background-color: #005f73;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+            background-color: #008b8b;
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        nav a {
+            color: #fff;
+            padding: 14px 20px;
+            text-decoration: none;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        nav a:hover {
+            background-color: #004d40;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        .section {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+        .section:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+        }
+        h2 {
+            color: #004d40;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        form input, form select, form textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        form input:focus, form select:focus, form textarea:focus {
+            border-color: #00796b;
+            outline: none;
+        }
+        form textarea {
+            resize: vertical;
+        }
+        button {
+            background-color: #00796b;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        button:hover {
+            background-color: #004d40;
+            transform: scale(1.05);
+        }
+        .output {
+            background: #e0f2f1;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .output h3 {
+            margin-top: 0;
+        }
+        .feedback-message {
+            background: #d0f0c0;
+            padding: 10px;
+            border-radius: 5px;
+            color: #004d40;
+            font-weight: bold;
+            margin-top: 15px;
+            animation: slideIn 0.5s ease-in-out;
+        }
+        .resource-link {
+            display: block;
+            color: #00796b;
+            text-decoration: none;
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        .resource-link:hover {
+            text-decoration: underline;
+        }
+        .faqs {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .faq-item {
+            margin-bottom: 15px;
+        }
+        .faq-item h4 {
+            margin: 0;
+            font-size: 18px;
+            color: #004d40;
+        }
+        .faq-item p {
+            margin: 5px 0;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+            }
+            nav a {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Mine Rehabilitation & Carbon Offset Certification</h1>
+    </header>
+    <nav>
+        <a href="#rehabilitation">Mine Rehabilitation</a>
+        <a href="#certification">Carbon Certification</a>
+    </nav>
+    <div class="container">
+        <div id="rehabilitation" class="section">
+            <h2>Mine Rehabilitation Planning</h2>
+            <p>Follow these steps to create a comprehensive rehabilitation plan:</p>
+            <ul>
+                <li>Define your rehabilitation strategy</li>
+                <li>Plan for land restoration</li>
+                <li>Outline post-mining monitoring activities</li>
+            </ul>
+            <form id="rehabForm">
+                <label for="strategy">Rehabilitation Strategy:</label>
+                <textarea id="strategy" rows="4" placeholder="Enter your rehabilitation strategy..."></textarea>
+                
+                <label for="landRestoration">Land Restoration Plan:</label>
+                <textarea id="landRestoration" rows="4" placeholder="Describe the land restoration plan..."></textarea>
+                
+                <label for="monitoring">Post-Mining Monitoring:</label>
+                <textarea id="monitoring" rows="4" placeholder="Outline the monitoring plan..."></textarea>
+                
+                <button type="button" onclick="submitRehabilitation()">Submit</button>
+            </form>
+            <div id="rehabOutput" class="output"></div>
+            <div id="rehabFeedback" class="feedback-message"></div>
+            <a href="https://example.com/research-guidelines" class="resource-link" target="_blank">Read more about mine rehabilitation</a>
+        </div>
+
+        <div id="certification" class="section">
+            <h2>Carbon Emission Offset Certification</h2>
+            <p>Follow these steps to submit your certification details:</p>
+            <ul>
+                <li>Enter your project details</li>
+                <li>Choose the certification status</li>
+                <li>Submit for review</li>
+            </ul>
+            <form id="certificationForm">
+                <label for="projectName">Project Name:</label>
+                <input type="text" id="projectName" placeholder="Enter project name">
+                
+                <label for="projectDetails">Project Details:</label>
+                <textarea id="projectDetails" rows="4" placeholder="Describe the carbon offset project..."></textarea>
+                
+                <label for="certificationStatus">Certification Status:</label>
+                <select id="certificationStatus">
+                    <option value="pending">Pending</option>
+                    <option value="verified">Verified</option>
+                    <option value="issued">Issued</option>
+                </select>
+                
+                <button type="button" onclick="submitCertification()">Submit</button>
+            </form>
+            <div id="certificationOutput" class="output"></div>
+            <div id="certificationFeedback" class="feedback-message"></div>
+            <a href="https://example.com/carbon-certification" class="resource-link" target="_blank">Learn more about carbon offset certification</a>
+        </div>
+
+        <div class="faqs">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <h4>What is mine rehabilitation?</h4>
+                <p>Mine rehabilitation is the process of restoring mined land to a natural or economically usable state after mining activities have ceased.</p>
+            </div>
+            <div class="faq-item">
+                <h4>Why is carbon offset certification important?</h4>
+                <p>Carbon offset certification helps ensure that projects designed to reduce greenhouse gas emissions are effective and meet established standards.</p>
+            </div>
+            <div class="faq-item">
+                <h4>How can I get help with my project?</h4>
+                <p>If you need further assistance, please contact our support team using the form below.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Contact Support</h2>
+            <form id="supportForm">
+                <label for="name">Your Name:</label>
+                <input type="text" id="name" placeholder="Enter your name">
+                
+                <label for="email">Your Email:</label>
+                <input type="email" id="email" placeholder="Enter your email">
+                
+                <label for="message">Your Message:</label>
+                <textarea id="message" rows="4" placeholder="Enter your message..."></textarea>
+                
+                <button type="button" onclick="submitSupport()">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function submitRehabilitation() {
+            const strategy = document.getElementById('strategy').value;
+            const landRestoration = document.getElementById('landRestoration').value;
+            const monitoring = document.getElementById('monitoring').value;
+
+            document.getElementById('rehabOutput').innerHTML = `
+                <h3>Rehabilitation Plan Submitted</h3>
+                <p><strong>Strategy:</strong> ${strategy}</p>
+                <p><strong>Land Restoration:</strong> ${landRestoration}</p>
+                <p><strong>Monitoring:</strong> ${monitoring}</p>
+            `;
+            document.getElementById('rehabFeedback').innerHTML = 'Your mine rehabilitation plan has been successfully submitted!';
+        }
+
+        function submitCertification() {
+            const projectName = document.getElementById('projectName').value;
+            const projectDetails = document.getElementById('projectDetails').value;
+            const certificationStatus = document.getElementById('certificationStatus').value;
+
+            document.getElementById('certificationOutput').innerHTML = `
+                <h3>Certification Details Submitted</h3>
+                <p><strong>Project Name:</strong> ${projectName}</p>
+                <p><strong>Project Details:</strong> ${projectDetails}</p>
+                <p><strong>Certification Status:</strong> ${certificationStatus}</p>
+            `;
+            document.getElementById('certificationFeedback').innerHTML = 'Your certification details have been successfully submitted!';
+        }
+
+        function submitSupport() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            alert(`Support request submitted by ${name} (${email}): ${message}`);
+            document.getElementById('supportForm').reset();
+        }
+    </script>
+</body>
+</html>

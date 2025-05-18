@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solar Energy Production</title>
+<style>
+  /* Unique Styles */
+  header {
+    background-image: url('');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 24px;
+    letter-spacing: 1px;
+  }
+
+  .footer {
+    background-color: #1B4F72; /* Dark Sapphire */
+    color: #fff;
+    padding: 30px 0; /* Increased padding */
+    text-align: center;
+  }
+
+  nav {
+      background-color: #000; /* Background image */
+      background-size: cover; /* Cover the entire area */
+      padding: 15px 0;
+      text-align: center;
+    }
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+    nav ul li {
+      display: inline-block;
+      margin-right: 20px;
+      position: relative; /* Position relative for hover effect */
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 18px;
+      transition: color 0.3s ease;
+      display: block;
+      padding: 10px 20px;
+      border-radius: 20px; /* Rounded corners for nav links */
+    }
+    nav ul li a:hover {
+      color: #fff;
+      text-decoration: none;
+      background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent background color on hover */
+    }
+
+  main {
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .box-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .container {
+    position: relative;
+    width: 300px;
+    text-align: center;
+    border-radius: 15px; /* Slightly increased border radius */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+  .progress-bar {
+    width: 100%;
+    height: 20px;
+    background-color: #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background-color: #4caf50;
+    width: 0; /* Initial width */
+    transition: width 10s ease; /* Animation duration */
+  }
+
+  .value {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .info {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f9f9f9;
+  }
+
+  .footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+  }
+  .icon-container {
+    position: absolute;
+    top: 10px;
+    right: 10px; /* Adjusting to top right corner */
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .map-icon {
+    width: 30px;
+    height: 30px;
+    fill: #ff9800; /* Icon color */
+    animation: bounce 2s infinite; /* Icon animation */
+  }
+  .glow-on-hover {
+    width: 220px;
+    height: 50px;
+    border: none;
+    outline: none;
+    color: #fff;
+    background: #111;
+    cursor: pointer;
+    position: relative;
+    z-index: 0;
+    border-radius: 10px;
+}
+
+.glow-on-hover:before {
+    content: '';
+    background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+    position: absolute;
+    top: -2px;
+    left:-2px;
+    background-size: 400%;
+    z-index: -1;
+    filter: blur(5px);
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    animation: glowing 20s linear infinite;
+    opacity: 0;
+    transition: opacity .3s ease-in-out;
+    border-radius: 10px;
+}
+
+.glow-on-hover:active {
+    color: #000
+}
+
+.glow-on-hover:active:after {
+    background: transparent;
+}
+
+.glow-on-hover:hover:before {
+    opacity: 1;
+}
+
+.glow-on-hover:after {
+    z-index: -1;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #111;
+    left: 0;
+    top: 0;
+    border-radius: 10px;
+}
+
+@keyframes glowing {
+    0% { background-position: 0 0; }
+    50% { background-position: 400% 0; }
+    100% { background-position: 0 0; }
+}
+#chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f8f9fa;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+        }
+
+        #chatbox {
+            padding: 10px;
+        }
+
+        #chat-messages {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .user-message {
+            text-align: right;
+            background-color: #d1e7dd;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        .bot-message {
+            text-align: left;
+            background-color: #e2e3e5;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        #chat-input {
+            display: flex;
+        }
+
+        #user-input {
+            width: 75%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+
+        button {
+            width: 20%;
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Chatbot toggle button */
+        #chat-toggle-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+</style>
+</head>
+<body>
+
+<header>
+  Solar Energy Production
+</header>
+<button id="chat-toggle-button" onclick="toggleChat()">💬</button>
+
+<!-- Chatbot container -->
+<div id="chat-container">
+    <div id="chatbox">
+        <div id="chat-messages"></div>
+        <div id="chat-input">
+            <input type="text" id="user-input" placeholder="Type your message here..." />
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+</div>
+<nav>
+  <ul>
+    <li><a href="index.html">Home </a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="renewable_energy.html">Renewable Energy Integration</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
+<main>
+  <div class="box-container">
+    <div class="container">
+      <div class="icon-container">
+        <a href="https://www.google.com/maps/place/Bhadla+Solar+Park/@27.5176004,71.9278185,17z/data=!3m1!4b1!4m6!3m5!1s0x3938ab6d9bc0c01f:0x9d99db4fb6f08825!8m2!3d27.5175957!4d71.9303934!16s%2Fg%2F11c53p354_?entry=ttu" target="_blank">
+          <svg class="map-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s-8-4.622-8-11a8 8 0 1 1 16 0c0 6.378-8 11-8 11z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </a>
+      </div>
+      
+      <div class="value" id="value-1">0 kWh</div>
+
+      <div class="progress-bar">
+
+        <div class="progress-bar-fill" id="progress-bar-fill-1"></div>
+      </div>
+      
+      <div class="info">Bhadla Solar Park, Rajasthan: Over 2,245 MW</div>
+      <a href="https://www.nsenergybusiness.com/projects/bhadla-solar-park-rajasthan/"><button class="glow-on-hover">Click Me</button></a>
+
+    </div>
+
+    <div class="container">
+      <div class="icon-container">
+        <a href="https://www.google.com/maps/place/Pavagada+Solar+Park/@14.1370431,77.3084689,15.8z/data=!4m6!3m5!1s0x3bb11b340e52a363:0x33fde7dac45e3b5c!8m2!3d14.1381958!4d77.3146306!16s%2Fg%2F11c6w05r4_?entry=ttu" target="_blank">
+          <svg class="map-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s-8-4.622-8-11a8 8 0 1 1 16 0c0 6.378-8 11-8 11z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </a>
+      </div>
+      <div class="value" id="value-2">0 kWh</div>
+
+      <div class="progress-bar">
+        
+        <div class="progress-bar-fill" id="progress-bar-fill-2"></div>
+      </div>
+      <div class="info">Pavagada Solar Park, Karnataka: Over 2,000 MW</div>
+      <a href="https://www.nsenergybusiness.com/projects/pavagada-solar-park/"><button class="glow-on-hover">Click Me</button></a>
+
+    </div>
+
+    <div class="container">
+      <div class="icon-container">
+        <a href="https://www.google.com/maps/search/Rewa+Ultra+Mega+Solar+Park,+Madhya+Pradesh+map/@23.8330694,76.8423574,7z/data=!3m1!4b1?entry=ttu" target="_blank">
+          <svg class="map-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s-8-4.622-8-11a8 8 0 1 1 16 0c0 6.378-8 11-8 11z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </a>
+      </div>
+      <div class="value" id="value-3">0 kWh</div>
+
+      <div class="progress-bar">
+        <div class="progress-bar-fill" id="progress-bar-fill-3"></div>
+      </div>
+      <div class="info">Rewa Ultra Mega Solar Park, Madhya Pradesh: 750 MW</div>
+      <a href="https://en.wikipedia.org/wiki/Rewa_Ultra_Mega_Solar"><button class="glow-on-hover">Click Me</button></a>
+
+    </div>
+
+    <div class="container">
+      <div class="icon-container">
+        <a href="https://www.google.com/maps/place/Kurnool+Ultra+Mega+Solar+Park/@15.681059,78.2799271,17z/data=!3m1!4b1!4m6!3m5!1s0x3bb5c78d92b41a75:0xdb53115d15bc98f6!8m2!3d15.681059!4d78.282502!16s%2Fg%2F11c6zx5hzh?entry=ttu" target="_blank">
+          <svg class="map-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s-8-4.622-8-11a8 8 0 1 1 16 0c0 6.378-8 11-8 11z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </a>
+      </div>
+      <div class="value" id="value-4">0 kWh</div>
+
+      <div class="progress-bar">
+        <div class="progress-bar-fill" id="progress-bar-fill-4"></div>
+      </div>
+      <div class="info">Kurnool Ultra Mega Solar Park, Andhra Pradesh: 1,000 MW</div>
+    
+      <a href="https://en.wikipedia.org/wiki/Kurnool_Ultra_Mega_Solar_Park"><button class="glow-on-hover">Click Me</button></a>
+    </div>
+
+    <div class="container">
+      <div class="icon-container">
+        <a href="https://www.google.com/maps/place/Adani+Green+Energy+Tamilnadu+Limited/@9.3458182,78.3912613,17z/data=!3m1!4b1!4m6!3m5!1s0x3b016cae8224c2f5:0x3532a77834d6dba!8m2!3d9.3458182!4d78.3938362!16s%2Fg%2F11bzsd1g6c?entry=ttu" target="_blank">
+          <svg class="map-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s-8-4.622-8-11a8 8 0 1 1 16 0c0 6.378-8 11-8 11z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </a>
+      </div>
+      <div class="value" id="value-5">0 kWh</div>
+
+      <div class="progress-bar">
+        <div class="progress-bar-fill" id="progress-bar-fill-5"></div>
+      </div>
+      <div class="info">Kamuthi Solar Power Project, Tamil Nadu: 648 MW</div>
+      <a href="https://en.wikipedia.org/wiki/Kamuthi_Solar_Power_Project"><button class="glow-on-hover">Click Me</button></a>
+
+    </div>
+
+    <div class="container">
+      <div class="icon-container">
+        <a href="https://www.google.com/maps/search/Charanka+Solar+Park,+Gujarat/@23.8996074,71.1933561,15z/data=!3m1!4b1?entry=ttu" target="_blank">
+          <svg class="map-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s-8-4.622-8-11a8 8 0 1 1 16 0c0 6.378-8 11-8 11z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </a>
+      </div>
+      <div class="value" id="value-6">0 kWh</div>
+
+      <div class="progress-bar">
+        <div class="progress-bar-fill" id="progress-bar-fill-6"></div>
+      </div>
+      <div class="info">Charanka Solar Park, Gujarat: Over 790 MW</div>
+      <a href="https://en.wikipedia.org/wiki/Gujarat_Solar_Park-1#:~:text=Gujarat%20Solar%20Park%2D1%20(also,2%2C000%20hectares(4%2C900%20acres))."><button class="glow-on-hover">Click Me</button></a>
+
+    </div>
+
+    <div class="container">
+      <div class="icon-container">
+        <a href="https://www.google.com/maps/search/NP+Kunta+Ultra+Mega+Solar+Park,+Andhra+Pradesh/@14.8527404,77.6994287,9z/data=!3m1!4b1?entry=ttu" target="_blank">
+          <svg class="map-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s-8-4.622-8-11a8 8 0 1 1 16 0c0 6.378-8 11-8 11z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </a>
+      </div>
+      <div class="value" id="value-7">0 kWh</div>
+
+      <div class="progress-bar">
+        <div class="progress-bar-fill" id="progress-bar-fill-7"></div>
+      </div>
+      <div class="info">NP Kunta Ultra Mega Solar Park, Andhra Pradesh: 1,000 MW</div>
+      <a href="https://en.wikipedia.org/wiki/NP_Kunta_Ultra_Mega_Solar_Park"><button class="glow-on-hover">Click Me</button></a>
+
+    </div>
+
+    <div class="container">
+      <div class="icon-container">
+        <a href="https://www.google.com/maps/place/Dhirubhai+Ambani+Solar+Park/@26.7934226,72.0064386,17z/data=!3m1!4b1!4m6!3m5!1s0x3940d5add75bfce1:0xbc56a0fb1982764b!8m2!3d26.7934178!4d72.0090135!16s%2Fm%2F0j9p0qw?entry=ttu" target="_blank">
+          <svg class="map-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s-8-4.622-8-11a8 8 0 1 1 16 0c0 6.378-8 11-8 11z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </a>
+      </div>
+      <div class="value" id="value-8">0 kWh</div>
+
+      <div class="progress-bar">
+        <div class="progress-bar-fill" id="progress-bar-fill-8"></div>
+      </div>
+      <div class="info">Dhursar Solar Park, Rajasthan: Over 1,000 MW</div>
+      <a href="https://en.wikipedia.org/wiki/Dhirubhai_Ambani_Solar_Park"><button class="glow-on-hover">Click Me</button></a>
+
+    </div>
+
+    <div class="container">
+      <div class="icon-container">
+        <a href="https://www.google.com/maps/search/Ananthapuramu+-+II+Ultra+Mega+Solar+Park,+Andhra+Pradesh/@14.0366545,78.420206,15z/data=!3m1!4b1?entry=ttu" target="_blank">
+          <svg class="map-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s-8-4.622-8-11a8 8 0 1 1 16 0c0 6.378-8 11-8 11z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </a>
+      </div>
+      <div class="value" id="value-9">0 kWh</div>
+
+      <div class="progress-bar">
+        <div class="progress-bar-fill" id="progress-bar-fill-9"></div>
+      </div>
+      <div class="info">Ananthapuramu - II Ultra Mega Solar Park, Andhra Pradesh: 1,500 MW</div>
+      <a href=".html"><button class="glow-on-hover">Click Me</button></a>
+
+    </div>
+   
+    <div class="container">
+      <div class="icon-container">
+        <a href="https://www.google.com/maps/place/Pavagada+Solar+Park/@14.1375905,77.3123226,16.15z/data=!4m6!3m5!1s0x3bb11b340e52a363:0x33fde7dac45e3b5c!8m2!3d14.1381958!4d77.3146306!16s%2Fg%2F11c6w05r4_?entry=ttu" target="_blank">
+          <svg class="map-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s-8-4.622-8-11a8 8 0 1 1 16 0c0 6.378-8 11-8 11z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+        </a>
+      </div>
+      <div class="value" id="value-10">0 kWh</div>
+      <div class="progress-bar">
+        <div class="progress-bar-fill" id="progress-bar-fill-10"></div>
+      </div>
+      <div class="value" id="value-10">0 kWh</div>
+      <div class="info">Tumkur Solar Park, Karnataka: 1,000 MW</div>
+      <a href="https://en.wikipedia.org/wiki/Pavagada_Solar_Park"><button class="glow-on-hover">Click Me</button></a>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  Footer Content
+</footer>
+
+<script>
+  const solarParks = [
+    { name: 'Bhadla Solar Park, Rajasthan', capacity: 2245000000 },
+    { name: 'Pavagada Solar Park, Karnataka', capacity: 2000000000 },
+    { name: 'Rewa Ultra Mega Solar Park, Madhya Pradesh', capacity: 750000000 },
+    { name: 'Kurnool Ultra Mega Solar Park, Andhra Pradesh', capacity: 1000000000 },
+    { name: 'Kamuthi Solar Power Project, Tamil Nadu', capacity: 648000000 },
+    { name: 'Charanka Solar Park, Gujarat', capacity: 790000000 },
+    { name: 'NP Kunta Ultra Mega Solar Park, Andhra Pradesh', capacity: 1000000000 },
+    { name: 'Dhursar Solar Park, Rajasthan', capacity: 1000000000 },
+    { name: 'Ananthapuramu - II Ultra Mega Solar Park, Andhra Pradesh', capacity: 1500000000 },
+    { name: 'Tumkur Solar Park, Karnataka', capacity: 1000000000 },
+  ];
+
+  const duration = 84000; // 1 hour animation duration in seconds
+
+  function formatValue(value) {
+    // Add commas as thousand separators
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  function updateValues() {
+    solarParks.forEach((solarPark, index) => {
+      const progressBarFill = document.getElementById(`progress-bar-fill-${index + 1}`);
+      const valueElement = document.getElementById(`value-${index + 1}`);
+      const endValue = solarPark.capacity;
+
+      let startTime = null;
+
+      function updateValue(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const elapsedTime = timestamp - startTime;
+        const progress = Math.min(elapsedTime / (duration * 1000), 1); // Convert duration to milliseconds
+        const currentValue = progress * endValue;
+
+        progressBarFill.style.width = `${progress * 100}%`; // Update progress bar fill width
+
+        valueElement.textContent = `${formatValue(Math.round(currentValue))} kWh`; // Display current value
+
+        if (elapsedTime < duration * 1000) {
+          requestAnimationFrame(updateValue);
+        }
+      }
+
+      requestAnimationFrame(updateValue);
+    });
+  }
+
+  setInterval(updateValues,84000); // Update values every 5 seconds
+  updateValues(); // Initial update
+  const responses = {
+            "find": {
+                "privacy policy": "Here's the [privacy policy](#).",
+                "terms of service": "You can view our [terms of service](#).",
+                "about us": "Learn more [About Us](#).",
+                "careers": "Check out our [Careers page](#).",
+                "team": "Meet our [Team](#).",
+                "blog": "Read our latest articles on our [Blog](#).",
+                "faq": "Visit the [FAQ page](#) for more information.",
+                "support": "Get help from our [Support page](#).",
+                "shipping policy": "Read our [Shipping Policy](#).",
+                "refund policy": "Details about our [Refund Policy](#)."
+            },
+            "navigate": {
+                "home": "Taking you to the [Home page](#).",
+                "services": "Visit our [Services page](#).",
+                "contact": "Here is the [Contact page](#).",
+                "products": "Explore our [Products page](#).",
+                "portfolio": "View our [Portfolio](#).",
+                "news": "Catch up on the latest [News](#).",
+                "events": "See upcoming [Events](#).",
+                "testimonials": "Read what our clients say on the [Testimonials page](#).",
+                "partners": "Meet our [Partners](#).",
+                "locations": "Find our [Locations](#)."
+            },
+            "faq": {
+                "return policy": "Our return policy allows returns within 30 days. [Read more](#).",
+                "contact info": "You can contact us at support@example.com or call +123456789.",
+                "opening hours": "We are open from 9 AM to 5 PM, Monday to Friday.",
+                "payment methods": "We accept credit cards, PayPal, and bank transfers.",
+                "membership": "Join our membership program [here](#).",
+                "discounts": "Find out about current discounts [here](#).",
+                "delivery time": "Delivery usually takes 3-5 business days.",
+                "international shipping": "Yes, we offer international shipping. [Learn more](#).",
+                "order tracking": "Track your order [here](#).",
+                "customer service": "Reach our customer service team [here](#)."
+            },
+            "recommendation": {
+                "gift": "I recommend checking out our 'Gifts' section [here](#).",
+                "popular items": "Our most popular items are listed [here](#).",
+                "new arrivals": "Check out our [New Arrivals](#).",
+                "best sellers": "Our [Best Sellers](#) are a great choice.",
+                "seasonal offers": "Explore our [Seasonal Offers](#).",
+                "specials": "Don’t miss our [Special Deals](#).",
+                "trending": "See what's [Trending](#) now.",
+                "for kids": "Browse our collection [for Kids](#).",
+                "for adults": "Explore items [for Adults](#).",
+                "on sale": "See all items currently [on Sale](#)."
+            }
+        };
+
+        // Toggle chatbot visibility
+        function toggleChat() {
+            const chatContainer = document.getElementById("chat-container");
+            if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
+                chatContainer.style.display = "block";
+            } else {
+                chatContainer.style.display = "none";
+            }
+        }
+
+        // Send message function
+        function sendMessage() {
+            const userInput = document.getElementById("user-input").value.trim();
+            if (userInput === "") return;
+
+            document.getElementById("user-input").value = ''; // Clear input after sending
+
+            const chatMessages = document.getElementById("chat-messages");
+
+            // Append user's message
+            chatMessages.innerHTML += `<div class="user-message">${userInput}</div>`;
+
+            // Get bot's response
+            const botResponse = getBotResponse(userInput);
+
+            // Append bot's response
+            chatMessages.innerHTML += `<div class="bot-message">${botResponse}</div>`;
+
+            // Auto-scroll to the bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Function to get bot's response
+        function getBotResponse(input) {
+            input = input.toLowerCase();
+
+            for (const category in responses) {
+                for (const key in responses[category]) {
+                    if (input.includes(key)) {
+                        return responses[category][key];
+                    }
+                }
+            }
+            return "I'm not sure about that. Could you please clarify?";
+        }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Features Example</title>
+    <style>
+        :root {
+            --primary-color: #ff6f61;
+            --secondary-color: #f15bb5;
+            --text-color: #333;
+            --background-color: #f0f0f0;
+            --hover-bg-color: #1c92d2;
+            --hover-text-color: #fff;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle, var(--background-color), #fff);
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+        header {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5)), url('');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            font-size: 2rem;
+            border-bottom: 10px solid var(--primary-color);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+        }
+        nav {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline-block;
+            margin: 0 20px;
+        }
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 12px 20px;
+            border-radius: 25px;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.4s ease, transform 0.4s ease;
+        }
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 100%;
+            height: 4px;
+            background: var(--hover-bg-color);
+            transition: transform 0.4s ease;
+            transform: translateX(-50%) scaleX(0);
+            transform-origin: bottom left;
+        }
+        nav ul li a:hover::before {
+            transform: translateX(-50%) scaleX(1);
+        }
+        nav ul li a:hover {
+            color: var(--hover-text-color);
+            transform: scale(1.1);
+        }
+        section {
+            padding: 50px 0;
+            text-align: center;
+        }
+        #data-visualization, #search-filter, #personalized-dashboard {
+            padding: 50px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        #chart {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        #search-filter input, #search-filter select {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+        }
+        .cta-button {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 15px 30px;
+            font-size: 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+        .cta-button:hover {
+            background-color: #45a049;
+        }
+        .feature {
+            margin-top: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        .feature-icon {
+            font-size: 64px;
+            color: #4CAF50;
+            margin-right: 30px;
+            animation: pulse 1s infinite;
+        }
+        .feature-text {
+            font-size: 20px;
+            text-align: left;
+        }
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        footer {
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            background-color: #333;
+            font-size: 14px;
+            border-top: 5px solid var(--primary-color);
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Advanced Features Demo</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#data-visualization">Data Visualization</a></li>
+            <li><a href="#search-filter">Search & Filter</a></li>
+            <li><a href="#personalized-dashboard">Dashboard</a></li>
+        </ul>
+    </nav>
+    <section id="data-visualization">
+        <h2>Real-Time Data Visualization</h2>
+        <canvas id="chart"></canvas>
+    </section>
+    <section id="search-filter">
+        <h2>Search and Filter</h2>
+        <input type="text" id="search" placeholder="Search...">
+        <select id="category">
+            <option value="">All Categories</option>
+            <option value="category1">Category 1</option>
+            <option value="category2">Category 2</option>
+        </select>
+        <button onclick="applyFilters()">Apply Filters</button>
+    </section>
+    <section id="personalized-dashboard">
+        <h2>Personalized Dashboard</h2>
+        <div id="dashboard-content">
+            <!-- Dynamic content will be injected here -->
+        </div>
+    </section>
+    <footer>
+        <p>&copy; 2024 Advanced Features Demo</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Real-Time Data Visualization
+        const ctx = document.getElementById('chart').getContext('2d');
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [], // Populate with real-time data labels
+                datasets: [{
+                    label: 'Data',
+                    data: [], // Populate with real-time data points
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    },
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Advanced Search and Filtering
+        function applyFilters() {
+            const search = document.getElementById('search').value.toLowerCase();
+            const category = document.getElementById('category').value;
+
+            // Implement your filtering logic here
+        }
+
+        // Personalized Dashboard
+        function loadDashboard() {
+            const dashboardContent = document.getElementById('dashboard-content');
+            // Inject dynamic content into the dashboard
+            dashboardContent.innerHTML = `
+                <p>Welcome to your personalized dashboard!</p>
+                <a href="#" class="cta-button">Explore Features</a>
+            `;
+        }
+        loadDashboard();
+    </script>
+</body>
+</html>

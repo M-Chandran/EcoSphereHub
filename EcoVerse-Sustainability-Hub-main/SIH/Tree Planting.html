@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afforestation Hub</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #ff6f61;
+            --secondary-color: #f15bb5;
+            --text-color: #333;
+            --background-color: #f0f0f0;
+            --hover-bg-color: #1c92d2;
+            --hover-text-color: #fff;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle, var(--background-color), #fff);
+            background-size: cover;
+            background-attachment: fixed;
+            color: var(--text-color);
+            overflow-x: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.5)), url('header-background.jpg');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            padding: 0 20px;
+            text-align: center;
+            font-size: 3rem;
+            line-height: 80px;
+            letter-spacing: 1.5px;
+            position: relative;
+            border-bottom: 10px solid var(--primary-color);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.8);
+            overflow: hidden;
+        }
+
+        header::after {
+            content: '';
+            position: relative;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+        }
+
+        nav {
+            background: rgba(0, 0, 0, 0.9);
+            padding: 20px 0;
+            text-align: center;
+            border-bottom: 2px solid var(--primary-color);
+            position: relative;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin: 0 20px;
+            position: relative;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            padding: 12px 20px;
+            border-radius: 25px;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.4s ease, transform 0.4s ease;
+        }
+
+        nav ul li a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 100%;
+            height: 4px;
+            background: var(--hover-bg-color);
+            transition: transform 0.4s ease;
+            transform: translateX(-50%) scaleX(0);
+            transform-origin: bottom left;
+        }
+
+        nav ul li a:hover::before {
+            transform: translateX(-50%) scaleX(1);
+        }
+
+        nav ul li a:hover {
+            color: var(--hover-text-color);
+            transform: scale(1.1);
+        }
+
+        footer {
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            background-color: #333;
+            font-size: 14px;
+            border-top: 5px solid var(--primary-color);
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .section {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+            display: block;
+        }
+
+        .section h3 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 10px;
+            color: #4CAF50;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f8f8f8;
+            font-size: 16px;
+            color: #555;
+            transition: background-color 0.3s ease;
+        }
+
+        input:hover,
+        select:hover {
+            background-color: #f0f0f0;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+
+        .feature {
+            width: 300px;
+            margin: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            cursor: pointer;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .feature:hover {
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            margin: 10px 0;
+            font-size: 20px;
+            color: #4CAF50;
+        }
+
+        .feature-description {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .redirect-button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.3s;
+            position: relative;
+        }
+
+        .redirect-button:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .redirect-button::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: width 0.5s, height 0.5s;
+            border-radius: 50%;
+            z-index: 0;
+            transform: translate(-50%, -50%);
+        }
+
+        .redirect-button:hover::before {
+            width: 400%;
+            height: 400%;
+        }
+
+        .redirect-button span {
+            position: relative;
+            z-index: 1;
+        }
+
+        #map {
+            height: 400px;
+            border-radius: 10px;
+        }
+        #chat-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f8f9fa;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            z-index: 1000;
+            display: none; /* Initially hidden */
+        }
+
+        #chatbox {
+            padding: 10px;
+        }
+
+        #chat-messages {
+            height: 200px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .user-message {
+            text-align: right;
+            background-color: #d1e7dd;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        .bot-message {
+            text-align: left;
+            background-color: #e2e3e5;
+            padding: 5px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        #chat-input {
+            display: flex;
+        }
+
+        #user-input {
+            width: 75%;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+
+        button {
+            width: 20%;
+            padding: 5px;
+            border: none;
+            border-radius: 3px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Chatbot toggle button */
+        #chat-toggle-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Afforestation Hub
+    </header>
+    <nav>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="service.html">Service</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+    <button id="chat-toggle-button" onclick="toggleChat()">💬</button>
+
+    <!-- Chatbot container -->
+    <div id="chat-container">
+        <div id="chatbox">
+            <div id="chat-messages"></div>
+            <div id="chat-input">
+                <input type="text" id="user-input" placeholder="Type your message here..." />
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <section class="section">
+            <h3>Overview</h3>
+            <p>Welcome to the Afforestation Hub! This platform is dedicated to promoting afforestation efforts and helping you track and participate in planting activities.</p>
+        </section>
+        <section class="section">
+            <h3>Our Features</h3>
+            <div class="features">
+                <div class="feature" id="plant-tracking">
+                    <div class="feature-icon">🌱</div>
+                    <div class="feature-title">Plant Tracking</div>
+                    <div class="feature-description">Keep track of all your planting activities and monitor their progress.</div>
+                    <a href="#" class="redirect-button" onclick="showPlantTracking()">Track Plants</a>
+                </div>
+                <div class="feature" id="events">
+                    <div class="feature-icon">📅</div>
+                    <div class="feature-title">Upcoming Events</div>
+                    <div class="feature-description">Stay informed about upcoming afforestation events and activities.</div>
+                    <a href="#" class="redirect-button" onclick="showEvents()">View Events</a>
+                </div>
+                <div class="feature" id="location-map">
+                    <div class="feature-icon">📍</div>
+                    <div class="feature-title">Location Map</div>
+                    <div class="feature-description">Find and visualize planting locations on our interactive map.</div>
+                    <a href="#" class="redirect-button" onclick="showMap()">Explore Map</a>
+                </div>
+                <div class="feature" id="carbon-footprint">
+                    <div class="feature-icon">🌍</div>
+                    <div class="feature-title">Carbon Footprint</div>
+                    <div class="feature-description">Estimate and track the carbon footprint of your planting activities.</div>
+                    <a href="#" class="redirect-button" onclick="showCarbonFootprint()">Calculate Footprint</a>
+                </div>
+                <div class="feature" id="statistics">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Statistics</div>
+                    <div class="feature-description">View detailed statistics and insights about afforestation efforts.</div>
+                    <a href="#" class="redirect-button" onclick="showStatistics()">View Stats</a>
+                </div>
+                <div class="feature" id="volunteer-opportunities">
+                    <div class="feature-icon">🌿</div>
+                    <div class="feature-title">Volunteer Opportunities</div>
+                    <div class="feature-description">Find and join local volunteer opportunities for planting activities.</div>
+                    <a href="#" class="redirect-button" onclick="showVolunteerOpportunities()">Find Opportunities</a>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <h3>Total Plantings</h3>
+            <div id="total-plantings" class="feature">
+                <p>Total number of plants planted: <span id="plant-count">0</span></p>
+            </div>
+        </section>
+        <section class="section">
+            <h3>Record a New Planting</h3>
+            <div class="form-container">
+                <form id="plant-form">
+                    <label for="location">Location:</label>
+                    <input type="text" id="location" name="location" required>
+
+                    <label for="species">Species:</label>
+                    <input type="text" id="species" name="species" required>
+
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" required>
+
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
+
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
+        </section>
+        <section class="section">
+            <h3>Upcoming Events</h3>
+            <div id="events-list" class="features">
+                <!-- Event items will be added here dynamically -->
+            </div>
+        </section>
+        <section class="section">
+            <h3>Location Map</h3>
+            <div id="map"></div>
+        </section>
+    </div>
+    <footer>
+        © 2024 Afforestation Hub. All rights reserved.
+    </footer>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the Leaflet Map
+        const responses = {
+            "find": {
+                "privacy policy": "Here's the [privacy policy](#).",
+                "terms of service": "You can view our [terms of service](#).",
+                "about us": "Learn more [About Us](#).",
+                "careers": "Check out our [Careers page](#).",
+                "team": "Meet our [Team](#).",
+                "blog": "Read our latest articles on our [Blog](#).",
+                "faq": "Visit the [FAQ page](#) for more information.",
+                "support": "Get help from our [Support page](#).",
+                "shipping policy": "Read our [Shipping Policy](#).",
+                "refund policy": "Details about our [Refund Policy](#)."
+            },
+            "navigate": {
+                "home": "Taking you to the [Home page](#).",
+                "services": "Visit our [Services page](#).",
+                "contact": "Here is the [Contact page](#).",
+                "products": "Explore our [Products page](#).",
+                "portfolio": "View our [Portfolio](#).",
+                "news": "Catch up on the latest [News](#).",
+                "events": "See upcoming [Events](#).",
+                "testimonials": "Read what our clients say on the [Testimonials page](#).",
+                "partners": "Meet our [Partners](#).",
+                "locations": "Find our [Locations](#)."
+            },
+            "faq": {
+                "return policy": "Our return policy allows returns within 30 days. [Read more](#).",
+                "contact info": "You can contact us at support@example.com or call +123456789.",
+                "opening hours": "We are open from 9 AM to 5 PM, Monday to Friday.",
+                "payment methods": "We accept credit cards, PayPal, and bank transfers.",
+                "membership": "Join our membership program [here](#).",
+                "discounts": "Find out about current discounts [here](#).",
+                "delivery time": "Delivery usually takes 3-5 business days.",
+                "international shipping": "Yes, we offer international shipping. [Learn more](#).",
+                "order tracking": "Track your order [here](#).",
+                "customer service": "Reach our customer service team [here](#)."
+            },
+            "recommendation": {
+                "gift": "I recommend checking out our 'Gifts' section [here](#).",
+                "popular items": "Our most popular items are listed [here](#).",
+                "new arrivals": "Check out our [New Arrivals](#).",
+                "best sellers": "Our [Best Sellers](#) are a great choice.",
+                "seasonal offers": "Explore our [Seasonal Offers](#).",
+                "specials": "Don’t miss our [Special Deals](#).",
+                "trending": "See what's [Trending](#) now.",
+                "for kids": "Browse our collection [for Kids](#).",
+                "for adults": "Explore items [for Adults](#).",
+                "on sale": "See all items currently [on Sale](#)."
+            }
+        };
+
+        // Toggle chatbot visibility
+        function toggleChat() {
+            const chatContainer = document.getElementById("chat-container");
+            if (chatContainer.style.display === "none" || chatContainer.style.display === "") {
+                chatContainer.style.display = "block";
+            } else {
+                chatContainer.style.display = "none";
+            }
+        }
+
+        // Send message function
+        function sendMessage() {
+            const userInput = document.getElementById("user-input").value.trim();
+            if (userInput === "") return;
+
+            document.getElementById("user-input").value = ''; // Clear input after sending
+
+            const chatMessages = document.getElementById("chat-messages");
+
+            // Append user's message
+            chatMessages.innerHTML += `<div class="user-message">${userInput}</div>`;
+
+            // Get bot's response
+            const botResponse = getBotResponse(userInput);
+
+            // Append bot's response
+            chatMessages.innerHTML += `<div class="bot-message">${botResponse}</div>`;
+
+            // Auto-scroll to the bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Function to get bot's response
+        function getBotResponse(input) {
+            input = input.toLowerCase();
+
+            for (const category in responses) {
+                for (const key in responses[category]) {
+                    if (input.includes(key)) {
+                        return responses[category][key];
+                    }
+                }
+            }
+            return "I'm not sure about that. Could you please clarify?";
+        }
+        var map = L.map('map').setView([20.5937, 78.9629], 5);
+
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Sample marker data
+        var markers = [
+            { lat: 20.5937, lng: 78.9629, popup: 'General Location in India' },
+            { lat: 12.9716, lng: 77.5946, popup: 'Bangalore' },
+            { lat: 19.0760, lng: 72.8777, popup: 'Mumbai' }
+        ];
+
+        // Add markers to the map
+        markers.forEach(function(marker) {
+            L.marker([marker.lat, marker.lng]).addTo(map)
+                .bindPopup(marker.popup)
+                .openPopup();
+        });
+
+        // Local storage for plant tracking
+        function updatePlantCount() {
+            var plantCount = parseInt(localStorage.getItem('plantCount') || '0');
+            document.getElementById('plant-count').innerText = plantCount;
+        }
+
+        // Event listeners for the form
+        document.getElementById('plant-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var location = document.getElementById('location').value;
+            var species = document.getElementById('species').value;
+            var quantity = parseInt(document.getElementById('quantity').value);
+            var date = document.getElementById('date').value;
+
+            // Update local storage
+            var currentCount = parseInt(localStorage.getItem('plantCount') || '0');
+            localStorage.setItem('plantCount', currentCount + quantity);
+
+            // Clear form
+            document.getElementById('plant-form').reset();
+            updatePlantCount();
+        });
+
+        // Sample data for events
+        var events = [
+            { title: 'Tree Planting Day', date: '2024-09-15', location: 'Delhi' },
+            { title: 'Community Cleanup', date: '2024-09-22', location: 'Mumbai' }
+        ];
+
+        function showEvents() {
+            var eventsList = document.getElementById('events-list');
+            eventsList.innerHTML = '';
+            events.forEach(function(event) {
+                var eventItem = document.createElement('div');
+                eventItem.className = 'feature';
+                eventItem.innerHTML = '<h4>' + event.title + '</h4><p>Date: ' + event.date + '<br>Location: ' + event.location + '</p>';
+                eventsList.appendChild(eventItem);
+            });
+        }
+
+        function showPlantTracking() {
+            alert('Plant Tracking feature is under development.');
+        }
+
+        function showCarbonFootprint() {
+            alert('Carbon Footprint calculation is under development.');
+        }
+
+        function showStatistics() {
+            alert('Statistics feature is under development.');
+        }
+
+        function showVolunteerOpportunities() {
+            alert('Volunteer Opportunities feature is under development.');
+        }
+
+        function showMap() {
+            map.invalidateSize();
+        }
+
+        // Initial setup
+        updatePlantCount();
+        showEvents();
+    </script>
+</body>
+</html>
